@@ -53,4 +53,4 @@ $ sh start.sh
 ```
 
 ## Drucker on Kubernetes
-https://github.com/drucker/drucker-parent/tree/master/docs/UsageDruckerOnKubernetes.md
+https://github.com/drucker/drucker-parent/tree/master/docs/Installation.md
