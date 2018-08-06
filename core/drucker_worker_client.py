@@ -43,16 +43,21 @@ def error_handling(error_response):
 
 class DruckerWorkerClient:
     def __init__(self, logger:SystemLoggerInterface,
-                 url=None, domain=None, app=None, env=None):
+                 host:str=None,
+                 domain:str=None, app:str=None, env:str=None, version:int=0):
         self.logger = logger
         self.stub = None
-        if url is None and (domain is None or app is None or env is None):
+        if host is None and (domain is None or app is None or env is None):
             raise RuntimeError("You must specify url or domain+app+env.")
 
-        if url is None:
-            self.__change_domain_app_env(domain, app, env)
+        if version == 0:
+            version = int(drucker_pb2.EnumVersionInfo.Name(version).replace('idx_',''))
+        v_str = drucker_pb2.EnumVersionInfo.Name(version)
+
+        if host is None:
+            self.__change_domain_app_env(domain, app, env, v_str)
         else:
-            self.__change_url(url)
+            self.__change_host(host)
 
     def on_error(self, error: Exception):
         """ Postprocessing on error
@@ -67,12 +72,12 @@ class DruckerWorkerClient:
         self.logger.error(str(error))
         self.logger.error(traceback.format_exc())
 
-    def __change_domain_app_env(self, domain, app, env):
-        url = "{0}-{1}.{2}".format(app,env,domain)
-        self.__change_url(url)
+    def __change_domain_app_env(self, domain:str, app:str, env:str, version:str):
+        host = "{0}-{1}-{2}.{3}".format(app,version,env,domain)
+        self.__change_host(host)
 
-    def __change_url(self, url):
-        channel = grpc.insecure_channel(url)
+    def __change_host(self, host:str):
+        channel = grpc.insecure_channel(host)
         self.stub = drucker_pb2_grpc.DruckerWorkerStub(channel)
 
     def __byte_input_request(self, input, option="{}"):
