@@ -9,8 +9,8 @@ from core.drucker_worker_client import DruckerWorkerClient
 from logger.logger_jsonlogger import SystemLogger
 logger = SystemLogger(logger_name="drucker_client")
 
-url = 'localhost:5000'
-client = DruckerWorkerClient(logger=logger, url=url)
+host = 'localhost:5000'
+client = DruckerWorkerClient(logger=logger, host=host)
 
 #domain = 'example.com'
 #app = 'drucker-sample'
