@@ -10,5 +10,5 @@ echo "$ECHO_PREFIX Start.."
 pip install -r requirements.txt
 
 pip install -r ./drucker-grpc-proto/requirements.txt
-python ./drucker-grpc-proto/run_codegen.py
+sh ./drucker-grpc-proto/run_codegen.sh
 python sample.py
