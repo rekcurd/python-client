@@ -24,5 +24,5 @@ input = [0,0,0,1,11,0,0,0,0,0,
          0,4,15,16,13,16,1,0,0,0,
          0,3,15,10,0,0,0,0,0,2,
          16,4,0,0]
-response = client.run_predict_arrint_arrint(input)
+response = client.predict(input)
 print(response)
