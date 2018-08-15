@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.3.1](https://github.com/drucker/drucker-client/tree/v0.3.1) (2018-08-15)
+[Full Changelog](https://github.com/drucker/drucker-client/compare/v0.3.0...v0.3.1)
+
+**Merged pull requests:**
+
+- \[Hotfix\] Change code generator [\#2](https://github.com/drucker/drucker-client/pull/2) ([keigohtr](https://github.com/keigohtr))
+
 ## [v0.3.0](https://github.com/drucker/drucker-client/tree/v0.3.0) (2018-08-08)
 [Full Changelog](https://github.com/drucker/drucker-client/compare/v0.2.0...v0.3.0)
 
