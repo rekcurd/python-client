@@ -1,8 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import sys
 import os
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+import pathlib
+
+
+root_path = pathlib.Path(os.path.abspath(__file__)).parent
+sys.path.append(str(root_path))
+
 
 from core.drucker_worker_client import DruckerWorkerClient
 
