@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.3.3](https://github.com/drucker/drucker-client/tree/v0.3.3) (2018-08-29)
+[Full Changelog](https://github.com/drucker/drucker-client/compare/v0.3.2...v0.3.3)
+
+**Merged pull requests:**
+
+- Refactor `sys.path.append` related code [\#3](https://github.com/drucker/drucker-client/pull/3) ([keigohtr](https://github.com/keigohtr))
+
 ## [v0.3.2](https://github.com/drucker/drucker-client/tree/v0.3.2) (2018-08-22)
 [Full Changelog](https://github.com/drucker/drucker-client/compare/v0.3.1...v0.3.2)
 
