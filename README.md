@@ -1,5 +1,5 @@
 # drucker-client
-Drucker is a framework of serving machine learning module. Drucker makes it easy to serve, manage and integrate your ML models into your existing services. Moreover, Drucker can be used on Kubernetes. This project is a SDK for accessing Drucker service of your ML module. All you need is initializing ```DruckerWorkerClient``` class.
+Drucker is a framework of serving machine learning module. Drucker client is a SDK for accessing Drucker.
 
 ## Parent Project
 https://github.com/drucker/drucker-parent
@@ -9,6 +9,64 @@ https://github.com/drucker/drucker-parent
 - [Drucker-dashboard](https://github.com/drucker/drucker-dashboard): Management web service for the machine learning models to the drucker service.
 - [Drucker-client](https://github.com/drucker/drucker-client) (here): SDK for accessing a drucker service.
 - [Drucker-example](https://github.com/drucker/drucker-example): Example of how to use drucker.
+
+## Installation
+From source:
+
+```
+git clone --recursive https://github.com/drucker/drucker-client.git
+cd drucker-client
+python setup.py install
+```
+
+From [PyPi](https://pypi.org/project/drucker_client/) directly:
+
+```
+pip install drucker_client
+```
+
+## Example
+Example is available [here](example/sample.py).
+
+```python
+from drucker_client import DruckerWorkerClient
+from drucker_client.logger import logger
+
+
+host = 'localhost:5000'
+client = DruckerWorkerClient(logger=logger, host=host)
+
+input = [0,0,0,1,11,0,0,0,0,0,
+         0,7,8,0,0,0,0,0,1,13,
+         6,2,2,0,0,0,7,15,0,9,
+         8,0,0,5,16,10,0,16,6,0,
+         0,4,15,16,13,16,1,0,0,0,
+         0,3,15,10,0,0,0,0,0,2,
+         16,4,0,0]
+response = client.run_predict_arrint_arrint(input)
+```
+
+If you want to access the Drucker which runs on Kubernetes, try it below.
+
+```python
+from drucker_client import DruckerWorkerClient
+from drucker_client.logger import logger
+
+
+domain = 'example.com'
+app = 'drucker-sample'
+env = 'development'
+client = DruckerWorkerClient(logger=logger, domain=domain, app=app, env=env)
+
+input = [0,0,0,1,11,0,0,0,0,0,
+         0,7,8,0,0,0,0,0,1,13,
+         6,2,2,0,0,0,7,15,0,9,
+         8,0,0,5,16,10,0,16,6,0,
+         0,4,15,16,13,16,1,0,0,0,
+         0,3,15,10,0,0,0,0,0,2,
+         16,4,0,0]
+response = client.run_predict_arrint_arrint(input)
+```
 
 ### Available methods of ```DruckerWorkerClient```
 You need to use an appropriate method for your Drucker service. The methods are generated according to the input and output formats. *V* is the length of feature vector. *M* is the number of classes. If your algorithm is a binary classifier, you set *M* to 1. If your algorithm is a multi-class classifier, you set *M* to the number of classes.
@@ -47,10 +105,7 @@ The input "option" field needs to be a json format. Any style is Ok but we have 
 |:---|:---|:---|
 |suppress_log_input |bool |True: NOT print the input and output to the log message. <BR>False (default): Print the input and output to the log message.
 
-### Run it
+### Test
 ```
-$ sh start.sh
+python -m unittest drucker_client/test/test_worker_client.py
 ```
-
-## Drucker on Kubernetes
-https://github.com/drucker/drucker-parent/tree/master/docs/Installation.md
