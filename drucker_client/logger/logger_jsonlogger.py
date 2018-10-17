@@ -1,14 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+
 import sys
 import time
 import logging
 from socket import gethostname
 from pythonjsonlogger import jsonlogger
-from logger.logger_interface import SystemLoggerInterface
+from .logger_interface import SystemLoggerInterface
 
-class SystemLogger(SystemLoggerInterface):
+
+class JsonSystemLogger(SystemLoggerInterface):
     class JsonFormatter(jsonlogger.JsonFormatter):
         def parse(self):
             return [
@@ -23,9 +25,9 @@ class SystemLogger(SystemLoggerInterface):
             log_record['host'] = gethostname()
             log_record['timestamp'] = int(time.time() * 1000) / 1000
 
-    def __init__(self, logger_name:str='drucker_client', log_level:int=logging.NOTSET) -> None:
+    def __init__(self, logger_name: str = 'drucker_client', log_level: int = logging.NOTSET) -> None:
         """
-        constructor
+        Constructor
         :param logger_name: logger name
         :param log_level:
         """
@@ -37,35 +39,35 @@ class SystemLogger(SystemLoggerInterface):
         self.log.addHandler(handler)
         self.log.setLevel(log_level)
 
-    def exception(self, message:str) -> None:
+    def exception(self, message: str) -> None:
         """
         emmits exception to log
         :param message: error message
         """
         self.log.error(message, exc_info=sys.exc_info(), stack_info=True, extra={'short_message': message, 'level': 3})
 
-    def error(self, message:str) -> None:
+    def error(self, message: str) -> None:
         """
         emits error log
         :param message: log
         """
         self.log.error(message, extra={'short_message': message, 'level': 3})
 
-    def debug(self, message:str) -> None:
+    def debug(self, message: str) -> None:
         """
         emits debug log
         :param message: log
         """
         self.log.debug(message, extra={'short_message': message, 'level': 7})
 
-    def info(self, message:str) -> None:
+    def info(self, message: str) -> None:
         """
         emits info log
         :param message: log
         """
         self.log.info(message, extra={'short_message': message, 'level': 6})
 
-    def warn(self, message:str) -> None:
+    def warn(self, message: str) -> None:
         """
         emits warn log
         :param message: log

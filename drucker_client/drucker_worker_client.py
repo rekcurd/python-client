@@ -1,16 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#
-# DO NOT EDIT HERE!!
+
 
 import traceback
 import types
 import grpc
 
-import drucker_pb2
-import drucker_pb2_grpc
-
-from logger.logger_interface import SystemLoggerInterface
+from .protobuf import drucker_pb2, drucker_pb2_grpc
+from .logger import SystemLoggerInterface
 
 
 def error_handling(error_response):
@@ -42,9 +39,10 @@ def error_handling(error_response):
 
 
 class DruckerWorkerClient:
-    def __init__(self, logger:SystemLoggerInterface,
-                 host:str=None,
-                 domain:str=None, app:str=None, env:str=None, version:int=None):
+    def __init__(self, logger: SystemLoggerInterface,
+                 host: str = None,
+                 domain: str = None, app: str = None,
+                 env: str = None, version: int = None):
         self.logger = logger
         self.stub = None
         if host is None and (domain is None or app is None or env is None):
@@ -73,11 +71,11 @@ class DruckerWorkerClient:
         self.logger.error(str(error))
         self.logger.error(traceback.format_exc())
 
-    def __change_domain_app_env(self, domain:str, app:str, env:str, version:str):
+    def __change_domain_app_env(self, domain: str, app: str, env: str, version: str):
         host = "{0}-{1}-{2}.{3}".format(app,version,env,domain)
         self.__change_host(host)
 
-    def __change_host(self, host:str):
+    def __change_host(self, host: str):
         channel = grpc.insecure_channel(host)
         self.stub = drucker_pb2_grpc.DruckerWorkerStub(channel)
 

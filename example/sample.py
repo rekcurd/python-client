@@ -1,19 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys
-import os
-import pathlib
 
+from drucker_client import DruckerWorkerClient
+from drucker_client.logger import logger
 
-root_path = pathlib.Path(os.path.abspath(__file__)).parent
-sys.path.append(str(root_path))
-
-
-from core.drucker_worker_client import DruckerWorkerClient
-
-from logger.logger_jsonlogger import SystemLogger
-logger = SystemLogger(logger_name="drucker_client")
 
 host = 'localhost:5000'
 client = DruckerWorkerClient(logger=logger, host=host)
