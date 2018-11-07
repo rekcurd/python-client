@@ -1,4 +1,10 @@
 # drucker-client
+
+[![Build Status](https://travis-ci.com/drucker/drucker-client.svg?branch=master)](https://travis-ci.com/drucker/drucker-client)
+[![PyPI version](https://badge.fury.io/py/drucker-client.svg)](https://badge.fury.io/py/drucker-client)
+[![codecov](https://codecov.io/gh/drucker/drucker-client/branch/master/graph/badge.svg)](https://codecov.io/gh/drucker/drucker-client "Non-generated packages only")
+[![pypi supported versions](https://img.shields.io/pypi/pyversions/drucker-client.svg)](https://pypi.python.org/pypi/drucker-client)
+
 Drucker is a framework of serving machine learning module. Drucker client is a SDK for accessing Drucker.
 
 ## Parent Project
