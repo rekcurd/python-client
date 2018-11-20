@@ -1,5 +1,15 @@
 # Change Log
 
+## [v0.4.0](https://github.com/drucker/drucker-client/tree/v0.4.0) (2018-11-07)
+[Full Changelog](https://github.com/drucker/drucker-client/compare/v0.3.4...v0.4.0)
+
+**Merged pull requests:**
+
+- Add badge [\#8](https://github.com/drucker/drucker-client/pull/8) ([keigohtr](https://github.com/keigohtr))
+- Create CONTRIBUTING.md [\#7](https://github.com/drucker/drucker-client/pull/7) ([syleeeee](https://github.com/syleeeee))
+- Create CODE\_OF\_CONDUCT.md [\#6](https://github.com/drucker/drucker-client/pull/6) ([syleeeee](https://github.com/syleeeee))
+- Pipnize drucker client [\#5](https://github.com/drucker/drucker-client/pull/5) ([keigohtr](https://github.com/keigohtr))
+
 ## [v0.3.4](https://github.com/drucker/drucker-client/tree/v0.3.4) (2018-10-03)
 [Full Changelog](https://github.com/drucker/drucker-client/compare/v0.3.3...v0.3.4)
 
