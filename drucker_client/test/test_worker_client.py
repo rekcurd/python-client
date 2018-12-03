@@ -26,6 +26,21 @@ class DruckerWorkerClientTest(unittest.TestCase):
     def tearDown(self):
         self._client_execution_thread_pool.shutdown(wait=True)
 
+    def test_metadata(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.STRING_STRING,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_String_String']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.STRING_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
+
+        self.assertEqual(invocation_metadata[0], ('x-rekcurd-application-name', 'drucker-sample'))
+        self.assertEqual(invocation_metadata[1], ('x-rekcurd-sevice-level', 'development'))
+
     def test_String_String(self):
         application_future = self._client_execution_thread_pool.submit(
             _client_application.run, _client_application.Scenario.STRING_STRING,

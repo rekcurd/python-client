@@ -409,7 +409,7 @@ _IMPLEMENTATIONS = {
 
 def run(scenario, channel):
     stub = drucker_pb2_grpc.DruckerWorkerStub(channel)
-    client = drucker_client.drucker_worker_client.DruckerWorkerClient(logger=logger, host='127.0.0.1:5000')
+    client = drucker_client.drucker_worker_client.DruckerWorkerClient(logger=logger, domain='example.com', app='drucker-sample', env='development')
     client.stub = stub
     try:
         return _IMPLEMENTATIONS[scenario](client)
