@@ -1,176 +1,450 @@
+import time
+import unittest
+
 import grpc
-from concurrent import futures
+from grpc.framework.foundation import logging_pool
+import grpc_testing
 
-from . import *
-from drucker_client.protobuf import drucker_pb2_grpc
-
-
-def _fake_string_input():
-    return 'Drucker'
+from drucker_client.protobuf import drucker_pb2
+from . import _client_application
 
 
-def _fake_bytes_input():
-    return b'u\x95jD\x0c\xf4\xf4{\xa6\xd7'
+target_service = drucker_pb2.DESCRIPTOR.services_by_name['DruckerWorker']
 
 
-def _fake_arrint_input():
-    return [124, 117,   2, 216]
+class DruckerWorkerClientTest(unittest.TestCase):
 
+    def setUp(self):
+        self._client_execution_thread_pool = logging_pool.pool(1)
+        self._fake_time = grpc_testing.strict_fake_time(time.time())
+        self._real_time = grpc_testing.strict_real_time()
+        self._fake_time_channel = grpc_testing.channel(
+            drucker_pb2.DESCRIPTOR.services_by_name.values(), self._fake_time)
+        self._real_time_channel = grpc_testing.channel(
+            drucker_pb2.DESCRIPTOR.services_by_name.values(), self._real_time)
 
-def _fake_arrfloat_input():
-    return [0.51558887, 0.07656534, 0.64258131, 0.45239403, 0.53738411,
-            0.3863864, 0.33985784]
+    def tearDown(self):
+        self._client_execution_thread_pool.shutdown(wait=True)
 
+    def test_String_String(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.STRING_STRING,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_String_String']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.STRING_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
 
-def _fake_arrstring_input():
-    return ['Drucker', 'is', 'great']
+        self.assertEqual(_client_application.Request.STRING_REQUEST.value, request.input)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
 
+    def test_String_Bytes(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.STRING_BYTES,
+            self._fake_time_channel)
+        invocation_metadata, request, rpc = (
+            self._fake_time_channel.take_unary_stream(
+                target_service.methods_by_name['Predict_String_Bytes']))
+        rpc.send_initial_metadata(())
+        rpc.terminate((), grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
 
-class DruckerWorkerClientTest(DruckerWorkerTest):
-    """Tests for DruckerWorkerClient.
-    DruckerWorkerClient has to work with DruckerWorkerServicer so the server must be setup for every input/output type.
-    """
-    server = None
-    client = None
+        self.assertEqual(_client_application.Request.STRING_REQUEST.value, request.input)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
 
-    @classmethod
-    def setUpClass(cls):
-        server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
-        drucker_pb2_grpc.add_DruckerWorkerServicer_to_server(
-            drucker.drucker_worker_servicer.DruckerWorkerServicer(
-                logger=service_logger, app=app),
-            server)
-        server.add_insecure_port("[::]:5000")
-        server.start()
-        cls.server = server
-        cls.client = drucker_client.drucker_worker_client.DruckerWorkerClient(logger=client_logger, host='127.0.0.1:5000')
+    def test_String_ArrInt(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.STRING_ARRINT,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_String_ArrInt']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.ARRAY_INT_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
 
-    @classmethod
-    def tearDownClass(cls):
-        if hasattr(cls, 'server'):
-            cls.server.stop(0)
+        self.assertEqual(_client_application.Request.STRING_REQUEST.value, request.input)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
 
-    @patch_predictor(Type.STRING, Type.STRING)
-    def test_string_string(self):
-        response = self.client.run_predict_string_string(_fake_string_input())
-        self.assertStringResponse(response)
+    def test_String_ArrFloat(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.STRING_ARRFLOAT,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_String_ArrFloat']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.ARRAY_FLOAT_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
 
-    @patch_predictor(Type.STRING, Type.BYTES)
-    def test_string_bytes(self):
-        response = self.client.run_predict_string_bytes(_fake_string_input())
-        self.assertBytesResponse(response)
+        self.assertEqual(_client_application.Request.STRING_REQUEST.value, request.input)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
 
-    @patch_predictor(Type.STRING, Type.ARRAY_INT)
-    def test_string_arrint(self):
-        response = self.client.run_predict_string_arrint(_fake_string_input())
-        self.assertArrIntResponse(response)
+    def test_String_ArrString(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.STRING_ARRSTRING,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_String_ArrString']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.ARRAY_STRING_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
 
-    @patch_predictor(Type.STRING, Type.ARRAY_FLOAT)
-    def test_string_arrfloat(self):
-        response = self.client.run_predict_string_arrfloat(_fake_string_input())
-        self.assertArrFloatResponse(response)
+        self.assertEqual(_client_application.Request.STRING_REQUEST.value, request.input)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
 
-    @patch_predictor(Type.STRING, Type.ARRAY_STRING)
-    def test_string_arrstring(self):
-        response = self.client.run_predict_string_arrstring(_fake_string_input())
-        self.assertArrStringResponse(response)
+    def test_Bytes_String(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.BYTES_STRING,
+            self._real_time_channel)
+        invocation_metadata, rpc = self._real_time_channel.take_stream_unary(
+            target_service.methods_by_name['Predict_Bytes_String'])
+        rpc.send_initial_metadata(())
+        first_request = rpc.take_request()
+        second_request = rpc.take_request()
+        third_request = rpc.take_request()
+        rpc.requests_closed()
+        rpc.terminate(_client_application.Response.STRING_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
 
-    @patch_predictor(Type.BYTES, Type.STRING)
-    def test_bytes_string(self):
-        response = self.client.run_predict_bytes_string(_fake_bytes_input())
-        self.assertStringResponse(response)
+        self.assertEqual(_client_application.Request.BYTES_REQUEST.value, first_request)
+        self.assertEqual(_client_application.Request.BYTES_REQUEST.value, second_request)
+        self.assertEqual(_client_application.Request.BYTES_REQUEST.value, third_request)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
 
-    @patch_predictor(Type.BYTES, Type.BYTES)
-    def test_bytes_bytes(self):
-        response = self.client.run_predict_bytes_bytes(_fake_bytes_input())
-        self.assertBytesResponse(response)
+    def test_Bytes_Bytes(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.BYTES_BYTES,
+            self._fake_time_channel)
+        invocation_metadata, rpc = self._fake_time_channel.take_stream_stream(
+            target_service.methods_by_name['Predict_Bytes_Bytes'])
+        first_request = rpc.take_request()
+        rpc.send_response(_client_application.Response.BYTES_RESPONSE.value)
+        rpc.send_response(_client_application.Response.BYTES_RESPONSE.value)
+        second_request = rpc.take_request()
+        rpc.send_response(_client_application.Response.BYTES_RESPONSE.value)
+        rpc.send_response(_client_application.Response.BYTES_RESPONSE.value)
+        rpc.requests_closed()
+        rpc.terminate((), grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
 
-    @patch_predictor(Type.BYTES, Type.ARRAY_INT)
-    def test_bytes_arrint(self):
-        response = self.client.run_predict_bytes_arrint(_fake_bytes_input())
-        self.assertArrIntResponse(response)
+        self.assertEqual(_client_application.Request.BYTES_REQUEST.value,
+                         first_request)
+        self.assertEqual(_client_application.Request.BYTES_REQUEST.value,
+                         second_request)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
 
-    @patch_predictor(Type.BYTES, Type.ARRAY_FLOAT)
-    def test_bytes_arrfloat(self):
-        response = self.client.run_predict_bytes_arrfloat(_fake_bytes_input())
-        self.assertArrFloatResponse(response)
+    def test_Bytes_ArrInt(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.BYTES_ARRINT,
+            self._real_time_channel)
+        invocation_metadata, rpc = self._real_time_channel.take_stream_unary(
+            target_service.methods_by_name['Predict_Bytes_ArrInt'])
+        rpc.send_initial_metadata(())
+        first_request = rpc.take_request()
+        second_request = rpc.take_request()
+        third_request = rpc.take_request()
+        rpc.requests_closed()
+        rpc.terminate(_client_application.Response.ARRAY_INT_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
 
-    @patch_predictor(Type.BYTES, Type.ARRAY_STRING)
-    def test_bytes_arrstring(self):
-        response = self.client.run_predict_bytes_arrstring(_fake_bytes_input())
-        self.assertArrStringResponse(response)
+        self.assertEqual(_client_application.Request.BYTES_REQUEST.value, first_request)
+        self.assertEqual(_client_application.Request.BYTES_REQUEST.value, second_request)
+        self.assertEqual(_client_application.Request.BYTES_REQUEST.value, third_request)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
 
-    @patch_predictor(Type.ARRAY_INT, Type.STRING)
-    def test_arrint_string(self):
-        response = self.client.run_predict_arrint_string(_fake_arrint_input())
-        self.assertStringResponse(response)
+    def test_Bytes_ArrFloat(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.BYTES_ARRFLOAT,
+            self._real_time_channel)
+        invocation_metadata, rpc = self._real_time_channel.take_stream_unary(
+            target_service.methods_by_name['Predict_Bytes_ArrFloat'])
+        rpc.send_initial_metadata(())
+        first_request = rpc.take_request()
+        second_request = rpc.take_request()
+        third_request = rpc.take_request()
+        rpc.requests_closed()
+        rpc.terminate(_client_application.Response.ARRAY_FLOAT_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
 
-    @patch_predictor(Type.ARRAY_INT, Type.BYTES)
-    def test_arrint_bytes(self):
-        response = self.client.run_predict_arrint_bytes(_fake_arrint_input())
-        self.assertBytesResponse(response)
+        self.assertEqual(_client_application.Request.BYTES_REQUEST.value, first_request)
+        self.assertEqual(_client_application.Request.BYTES_REQUEST.value, second_request)
+        self.assertEqual(_client_application.Request.BYTES_REQUEST.value, third_request)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
 
-    @patch_predictor(Type.ARRAY_INT, Type.ARRAY_INT)
-    def test_arrint_arrint(self):
-        response = self.client.run_predict_arrint_arrint(_fake_arrint_input())
-        self.assertArrIntResponse(response)
+    def test_Bytes_ArrString(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.BYTES_ARRSTRING,
+            self._real_time_channel)
+        invocation_metadata, rpc = self._real_time_channel.take_stream_unary(
+            target_service.methods_by_name['Predict_Bytes_ArrString'])
+        rpc.send_initial_metadata(())
+        first_request = rpc.take_request()
+        second_request = rpc.take_request()
+        third_request = rpc.take_request()
+        rpc.requests_closed()
+        rpc.terminate(_client_application.Response.ARRAY_STRING_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
 
-    @patch_predictor(Type.ARRAY_INT, Type.ARRAY_FLOAT)
-    def test_arrint_arrfloat(self):
-        response = self.client.run_predict_arrint_arrfloat(_fake_arrint_input())
-        self.assertArrFloatResponse(response)
+        self.assertEqual(_client_application.Request.BYTES_REQUEST.value, first_request)
+        self.assertEqual(_client_application.Request.BYTES_REQUEST.value, second_request)
+        self.assertEqual(_client_application.Request.BYTES_REQUEST.value, third_request)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
 
-    @patch_predictor(Type.ARRAY_INT, Type.ARRAY_STRING)
-    def test_arrint_arrstring(self):
-        response = self.client.run_predict_arrint_arrstring(_fake_arrint_input())
-        self.assertArrStringResponse(response)
+    def test_ArrInt_String(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.ARRINT_STRING,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_ArrInt_String']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.STRING_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
 
-    @patch_predictor(Type.ARRAY_FLOAT, Type.STRING)
-    def test_arrfloat_string(self):
-        response = self.client.run_predict_arrfloat_string(_fake_arrfloat_input())
-        self.assertStringResponse(response)
+        self.assertEqual(_client_application.Request.ARRAY_INT_REQUEST.value, request.input)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
 
-    @patch_predictor(Type.ARRAY_FLOAT, Type.BYTES)
-    def test_arrfloat_bytes(self):
-        response = self.client.run_predict_arrfloat_bytes(_fake_arrfloat_input())
-        self.assertBytesResponse(response)
+    def test_ArrInt_Bytes(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.ARRINT_BYTES,
+            self._fake_time_channel)
+        invocation_metadata, request, rpc = (
+            self._fake_time_channel.take_unary_stream(
+                target_service.methods_by_name['Predict_ArrInt_Bytes']))
+        rpc.send_initial_metadata(())
+        rpc.terminate((), grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
 
-    @patch_predictor(Type.ARRAY_FLOAT, Type.ARRAY_INT)
-    def test_arrfloat_arrint(self):
-        response = self.client.run_predict_arrfloat_arrint(_fake_arrfloat_input())
-        self.assertArrIntResponse(response)
+        self.assertEqual(_client_application.Request.ARRAY_INT_REQUEST.value, request.input)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
 
-    @patch_predictor(Type.ARRAY_FLOAT, Type.ARRAY_FLOAT)
-    def test_arrfloat_arrfloat(self):
-        response = self.client.run_predict_arrfloat_arrfloat(_fake_arrfloat_input())
-        self.assertArrFloatResponse(response)
+    def test_ArrInt_ArrInt(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.ARRINT_ARRINT,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_ArrInt_ArrInt']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.ARRAY_INT_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
 
-    @patch_predictor(Type.ARRAY_FLOAT, Type.ARRAY_STRING)
-    def test_arrfloat_arrstring(self):
-        response = self.client.run_predict_arrfloat_arrstring(_fake_arrfloat_input())
-        self.assertArrStringResponse(response)
+        self.assertEqual(_client_application.Request.ARRAY_INT_REQUEST.value, request.input)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
 
-    @patch_predictor(Type.ARRAY_STRING, Type.STRING)
-    def test_arrstring_string(self):
-        response = self.client.run_predict_arrstring_string(_fake_arrstring_input())
-        self.assertStringResponse(response)
+    def test_ArrInt_ArrFloat(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.ARRINT_ARRFLOAT,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_ArrInt_ArrFloat']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.ARRAY_FLOAT_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
 
-    @patch_predictor(Type.ARRAY_STRING, Type.BYTES)
-    def test_arrstring_bytes(self):
-        response = self.client.run_predict_arrstring_bytes(_fake_arrstring_input())
-        self.assertBytesResponse(response)
+        self.assertEqual(_client_application.Request.ARRAY_INT_REQUEST.value, request.input)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
 
-    @patch_predictor(Type.ARRAY_STRING, Type.ARRAY_INT)
-    def test_arrstring_arrint(self):
-        response = self.client.run_predict_arrstring_arrint(_fake_arrstring_input())
-        self.assertArrIntResponse(response)
+    def test_ArrInt_ArrString(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.ARRINT_ARRSTRING,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_ArrInt_ArrString']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.ARRAY_STRING_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
 
-    @patch_predictor(Type.ARRAY_STRING, Type.ARRAY_FLOAT)
-    def test_arrstring_arrfloat(self):
-        response = self.client.run_predict_arrstring_arrfloat(_fake_arrstring_input())
-        self.assertArrFloatResponse(response)
+        self.assertEqual(_client_application.Request.ARRAY_INT_REQUEST.value, request.input)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
 
-    @patch_predictor(Type.ARRAY_STRING, Type.ARRAY_STRING)
-    def test_arrstring_arrstring(self):
-        response = self.client.run_predict_arrstring_arrstring(_fake_arrstring_input())
-        self.assertArrStringResponse(response)
+    def test_ArrFloat_String(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.ARRFLOAT_STRING,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_ArrFloat_String']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.STRING_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
+
+        self.assertAlmostEqual(_client_application.Request.ARRAY_FLOAT_REQUEST.value[0], request.input[0])
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
+
+    def test_ArrFloat_Bytes(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.ARRFLOAT_BYTES,
+            self._fake_time_channel)
+        invocation_metadata, request, rpc = (
+            self._fake_time_channel.take_unary_stream(
+                target_service.methods_by_name['Predict_ArrFloat_Bytes']))
+        rpc.send_initial_metadata(())
+        rpc.terminate((), grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
+
+        self.assertAlmostEqual(_client_application.Request.ARRAY_FLOAT_REQUEST.value[0], request.input[0])
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
+
+    def test_ArrFloat_ArrInt(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.ARRFLOAT_ARRINT,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_ArrFloat_ArrInt']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.ARRAY_INT_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
+
+        self.assertAlmostEqual(_client_application.Request.ARRAY_FLOAT_REQUEST.value[0], request.input[0])
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
+
+    def test_ArrFloat_ArrFloat(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.ARRFLOAT_ARRFLOAT,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_ArrFloat_ArrFloat']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.ARRAY_FLOAT_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
+
+        self.assertAlmostEqual(_client_application.Request.ARRAY_FLOAT_REQUEST.value[0], request.input[0])
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
+
+    def test_ArrFloat_ArrString(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.ARRFLOAT_ARRSTRING,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_ArrFloat_ArrString']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.ARRAY_STRING_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
+
+        self.assertAlmostEqual(_client_application.Request.ARRAY_FLOAT_REQUEST.value[0], request.input[0])
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
+
+    def test_ArrString_String(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.ARRSTRING_STRING,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_ArrString_String']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.STRING_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
+
+        self.assertEqual(_client_application.Request.ARRAY_STRING_REQUEST.value, request.input)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
+
+    def test_ArrString_Bytes(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.ARRSTRING_BYTES,
+            self._fake_time_channel)
+        invocation_metadata, request, rpc = (
+            self._fake_time_channel.take_unary_stream(
+                target_service.methods_by_name['Predict_ArrString_Bytes']))
+        rpc.send_initial_metadata(())
+        rpc.terminate((), grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
+
+        self.assertEqual(_client_application.Request.ARRAY_STRING_REQUEST.value, request.input)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
+
+    def test_ArrString_ArrInt(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.ARRSTRING_ARRINT,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_ArrString_ArrInt']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.ARRAY_INT_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
+
+        self.assertEqual(_client_application.Request.ARRAY_STRING_REQUEST.value, request.input)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
+
+    def test_ArrString_ArrFloat(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.ARRSTRING_ARRFLOAT,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_ArrString_ArrFloat']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.ARRAY_FLOAT_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
+
+        self.assertEqual(_client_application.Request.ARRAY_STRING_REQUEST.value, request.input)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
+
+    def test_ArrString_ArrString(self):
+        application_future = self._client_execution_thread_pool.submit(
+            _client_application.run, _client_application.Scenario.ARRSTRING_ARRSTRING,
+            self._real_time_channel)
+        invocation_metadata, request, rpc = (
+            self._real_time_channel.take_unary_unary(
+                target_service.methods_by_name['Predict_ArrString_ArrString']))
+        rpc.send_initial_metadata(())
+        rpc.terminate(_client_application.Response.ARRAY_STRING_RESPONSE.value, (),
+                      grpc.StatusCode.OK, '')
+        application_return_value = application_future.result()
+
+        self.assertEqual(_client_application.Request.ARRAY_STRING_REQUEST.value, request.input)
+        self.assertIs(application_return_value.kind,
+                      _client_application.Outcome.Kind.SATISFACTORY)
