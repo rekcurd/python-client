@@ -1,38 +1,40 @@
-# drucker-client
+# rekcurd-client
 
-[![Build Status](https://travis-ci.com/drucker/drucker-client.svg?branch=master)](https://travis-ci.com/drucker/drucker-client)
-[![PyPI version](https://badge.fury.io/py/drucker-client.svg)](https://badge.fury.io/py/drucker-client)
-[![codecov](https://codecov.io/gh/drucker/drucker-client/branch/master/graph/badge.svg)](https://codecov.io/gh/drucker/drucker-client "Non-generated packages only")
-[![pypi supported versions](https://img.shields.io/pypi/pyversions/drucker-client.svg)](https://pypi.python.org/pypi/drucker-client)
+[![Build Status](https://travis-ci.com/rekcurd/drucker-client.svg?branch=master)](https://travis-ci.com/rekcurd/drucker-client)
+[![PyPI version](https://badge.fury.io/py/rekcurd-client.svg)](https://badge.fury.io/py/rekcurd-client)
+[![codecov](https://codecov.io/gh/rekcurd/drucker-client/branch/master/graph/badge.svg)](https://codecov.io/gh/rekcurd/drucker-client "Non-generated packages only")
+[![pypi supported versions](https://img.shields.io/pypi/pyversions/rekcurd-client.svg)](https://pypi.python.org/pypi/rekcurd-client)
 
-Drucker is a framework of serving machine learning module. Drucker client is a SDK for accessing Drucker.
+Rekcurd client is the project for integrating ML module. Any Rekcurd service is connectable. It can connect the Rekcurd service on Kubernetes.
+
 
 ## Parent Project
-https://github.com/drucker/drucker-parent
+https://github.com/rekcurd/drucker-parent
+
 
 ## Components
-- [Drucker](https://github.com/drucker/drucker): Serving framework for a machine learning module.
-- [Drucker-dashboard](https://github.com/drucker/drucker-dashboard): Management web service for the machine learning models to the drucker service.
-- [Drucker-client](https://github.com/drucker/drucker-client) (here): SDK for accessing a drucker service.
-- [Drucker-example](https://github.com/drucker/drucker-example): Example of how to use drucker.
+- [Rekcurd](https://github.com/rekcurd/drucker): Project for serving ML module.
+- [Rekcurd-dashboard](https://github.com/rekcurd/drucker-dashboard): Project for managing ML model and deploying ML module.
+- [Rekcurd-client](https://github.com/rekcurd/drucker-client) (here): Project for integrating ML module. 
+
 
 ## Installation
 From source:
 
 ```
-git clone --recursive https://github.com/drucker/drucker-client.git
+git clone --recursive https://github.com/rekcurd/drucker-client.git
 cd drucker-client
 python setup.py install
 ```
 
-From [PyPi](https://pypi.org/project/drucker_client/) directly:
+From [PyPi](https://pypi.org/project/rekcurd_client/) directly:
 
 ```
-pip install drucker_client
+pip install rekcurd_client
 ```
 
-## Example
-Example is available [here](example/sample.py).
+## How to use
+Example code is available [here](./example/sample.py).
 
 ```python
 from drucker_client import DruckerWorkerClient
@@ -52,7 +54,7 @@ input = [0,0,0,1,11,0,0,0,0,0,
 response = client.run_predict_arrint_arrint(input)
 ```
 
-If you want to access the Drucker which runs on Kubernetes, try it below.
+When you use Kubernetes and deploy Rekcurd service via Rekcurd dashboard, you can access your Rekcurd service like the below.
 
 ```python
 from drucker_client import DruckerWorkerClient
@@ -74,8 +76,8 @@ input = [0,0,0,1,11,0,0,0,0,0,
 response = client.run_predict_arrint_arrint(input)
 ```
 
-### Available methods of ```DruckerWorkerClient```
-You need to use an appropriate method for your Drucker service. The methods are generated according to the input and output formats. *V* is the length of feature vector. *M* is the number of classes. If your algorithm is a binary classifier, you set *M* to 1. If your algorithm is a multi-class classifier, you set *M* to the number of classes.
+### DruckerWorkerClient
+You need to use an appropriate method for your Rekcurd service. The methods are generated according to the input and output formats. *V* is the length of feature vector. *M* is the number of classes. If your algorithm is a binary classifier, you set *M* to 1. If your algorithm is a multi-class classifier, you set *M* to the number of classes.
 
 |method |input: data<BR>(required) |input: option |output: label<BR>(required) |output: score<BR>(required) |output: option |
 |:---|:---|:---|:---|:---|:---|
@@ -111,7 +113,8 @@ The input "option" field needs to be a json format. Any style is Ok but we have 
 |:---|:---|:---|
 |suppress_log_input |bool |True: NOT print the input and output to the log message. <BR>False (default): Print the input and output to the log message.
 
-### Test
+
+## Unittest
 ```
-python -m unittest drucker_client/test/test_worker_client.py
+$ python -m unittest
 ```
