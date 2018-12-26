@@ -1,4 +1,4 @@
 [submodule "drucker_client/grpc"]
 	path = drucker_client/grpc
-	url = https://github.com/drucker/drucker-grpc-proto.git
+	url = https://github.com/rekcurd/drucker-grpc-proto.git
 	branch = v0.4

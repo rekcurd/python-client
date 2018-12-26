@@ -53,6 +53,9 @@ class DruckerWorkerClient:
         else:
             v_str = drucker_pb2.EnumVersionInfo.Name(version)
 
+        self.__metadata = [('x-rekcurd-application-name', app),
+                           ('x-rekcurd-sevice-level', env),
+                           ('x-rekcurd-grpc-version', v_str)]
         if host is None:
             self.__change_domain_app_env(domain, app, env, v_str)
         else:
@@ -88,7 +91,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.StringInput()
         request.input = input
         request.option.val=option
-        response = self.stub.Predict_String_String(request)
+        response = self.stub.Predict_String_String(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.BytesOutput())
@@ -96,7 +99,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.StringInput()
         request.input = input
         request.option.val=option
-        response = self.stub.Predict_String_Bytes(request)
+        response = self.stub.Predict_String_Bytes(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.ArrIntOutput())
@@ -104,7 +107,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.StringInput()
         request.input = input
         request.option.val=option
-        response = self.stub.Predict_String_ArrInt(request)
+        response = self.stub.Predict_String_ArrInt(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.ArrFloatOutput())
@@ -112,7 +115,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.StringInput()
         request.input = input
         request.option.val=option
-        response = self.stub.Predict_String_ArrFloat(request)
+        response = self.stub.Predict_String_ArrFloat(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.ArrStringOutput())
@@ -120,38 +123,38 @@ class DruckerWorkerClient:
         request = drucker_pb2.StringInput()
         request.input = input
         request.option.val=option
-        response = self.stub.Predict_String_ArrString(request)
+        response = self.stub.Predict_String_ArrString(request, metadata=self.__metadata)
         return response
 
 
     @error_handling(drucker_pb2.StringOutput())
     def run_predict_bytes_string(self, input, option="{}"):
         request_iterator = self.__byte_input_request(input, option)
-        response = self.stub.Predict_Bytes_String(request_iterator)
+        response = self.stub.Predict_Bytes_String(request_iterator, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.BytesOutput())
     def run_predict_bytes_bytes(self, input, option="{}"):
         request_iterator = self.__byte_input_request(input, option)
-        response = self.stub.Predict_Bytes_Bytes(request_iterator)
+        response = self.stub.Predict_Bytes_Bytes(request_iterator, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.ArrIntOutput())
     def run_predict_bytes_arrint(self, input, option="{}"):
         request_iterator = self.__byte_input_request(input, option)
-        response = self.stub.Predict_Bytes_ArrInt(request_iterator)
+        response = self.stub.Predict_Bytes_ArrInt(request_iterator, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.ArrFloatOutput())
     def run_predict_bytes_arrfloat(self, input, option="{}"):
         request_iterator = self.__byte_input_request(input, option)
-        response = self.stub.Predict_Bytes_ArrFloat(request_iterator)
+        response = self.stub.Predict_Bytes_ArrFloat(request_iterator, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.ArrStringOutput())
     def run_predict_bytes_arrstring(self, input, option="{}"):
         request_iterator = self.__byte_input_request(input, option)
-        response = self.stub.Predict_Bytes_ArrString(request_iterator)
+        response = self.stub.Predict_Bytes_ArrString(request_iterator, metadata=self.__metadata)
         return response
 
 
@@ -160,7 +163,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.ArrIntInput()
         request.input.extend(input)
         request.option.val=option
-        response = self.stub.Predict_ArrInt_String(request)
+        response = self.stub.Predict_ArrInt_String(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.BytesOutput())
@@ -168,7 +171,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.ArrIntInput()
         request.input.extend(input)
         request.option.val=option
-        response = self.stub.Predict_ArrInt_Bytes(request)
+        response = self.stub.Predict_ArrInt_Bytes(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.ArrIntOutput())
@@ -176,7 +179,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.ArrIntInput()
         request.input.extend(input)
         request.option.val=option
-        response = self.stub.Predict_ArrInt_ArrInt(request)
+        response = self.stub.Predict_ArrInt_ArrInt(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.ArrFloatOutput())
@@ -184,7 +187,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.ArrIntInput()
         request.input.extend(input)
         request.option.val=option
-        response = self.stub.Predict_ArrInt_ArrFloat(request)
+        response = self.stub.Predict_ArrInt_ArrFloat(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.ArrStringOutput())
@@ -192,7 +195,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.ArrIntInput()
         request.input.extend(input)
         request.option.val=option
-        response = self.stub.Predict_ArrInt_ArrString(request)
+        response = self.stub.Predict_ArrInt_ArrString(request, metadata=self.__metadata)
         return response
 
 
@@ -201,7 +204,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.ArrFloatInput()
         request.input.extend(input)
         request.option.val=option
-        response = self.stub.Predict_ArrFloat_String(request)
+        response = self.stub.Predict_ArrFloat_String(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.BytesOutput())
@@ -209,7 +212,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.ArrFloatInput()
         request.input.extend(input)
         request.option.val=option
-        response = self.stub.Predict_ArrFloat_Bytes(request)
+        response = self.stub.Predict_ArrFloat_Bytes(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.ArrIntOutput())
@@ -217,7 +220,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.ArrFloatInput()
         request.input.extend(input)
         request.option.val=option
-        response = self.stub.Predict_ArrFloat_ArrInt(request)
+        response = self.stub.Predict_ArrFloat_ArrInt(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.ArrFloatOutput())
@@ -225,7 +228,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.ArrFloatInput()
         request.input.extend(input)
         request.option.val=option
-        response = self.stub.Predict_ArrFloat_ArrFloat(request)
+        response = self.stub.Predict_ArrFloat_ArrFloat(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.ArrStringOutput())
@@ -233,7 +236,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.ArrFloatInput()
         request.input.extend(input)
         request.option.val=option
-        response = self.stub.Predict_ArrFloat_ArrString(request)
+        response = self.stub.Predict_ArrFloat_ArrString(request, metadata=self.__metadata)
         return response
 
 
@@ -242,7 +245,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.ArrStringInput()
         request.input.extend(input)
         request.option.val=option
-        response = self.stub.Predict_ArrString_String(request)
+        response = self.stub.Predict_ArrString_String(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.BytesOutput())
@@ -250,7 +253,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.ArrStringInput()
         request.input.extend(input)
         request.option.val=option
-        response = self.stub.Predict_ArrString_Bytes(request)
+        response = self.stub.Predict_ArrString_Bytes(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.ArrIntOutput())
@@ -258,7 +261,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.ArrStringInput()
         request.input.extend(input)
         request.option.val=option
-        response = self.stub.Predict_ArrString_ArrInt(request)
+        response = self.stub.Predict_ArrString_ArrInt(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.ArrFloatOutput())
@@ -266,7 +269,7 @@ class DruckerWorkerClient:
         request = drucker_pb2.ArrStringInput()
         request.input.extend(input)
         request.option.val=option
-        response = self.stub.Predict_ArrString_ArrFloat(request)
+        response = self.stub.Predict_ArrString_ArrFloat(request, metadata=self.__metadata)
         return response
 
     @error_handling(drucker_pb2.ArrStringOutput())
@@ -274,5 +277,5 @@ class DruckerWorkerClient:
         request = drucker_pb2.ArrStringInput()
         request.input.extend(input)
         request.option.val=option
-        response = self.stub.Predict_ArrString_ArrString(request)
+        response = self.stub.Predict_ArrString_ArrString(request, metadata=self.__metadata)
         return response
