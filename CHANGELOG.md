@@ -1,5 +1,13 @@
 # Change Log
 
+## [v0.4.3](https://github.com/rekcurd/drucker-client/tree/v0.4.3) (2018-12-26)
+[Full Changelog](https://github.com/rekcurd/drucker-client/compare/v0.4.2...v0.4.3)
+
+**Merged pull requests:**
+
+- Update README.md [\#12](https://github.com/rekcurd/drucker-client/pull/12) ([keigohtr](https://github.com/keigohtr))
+- Istio support [\#11](https://github.com/rekcurd/drucker-client/pull/11) ([keigohtr](https://github.com/keigohtr))
+
 ## [v0.4.2](https://github.com/rekcurd/drucker-client/tree/v0.4.2) (2018-11-28)
 [Full Changelog](https://github.com/rekcurd/drucker-client/compare/v0.4.1...v0.4.2)
 
