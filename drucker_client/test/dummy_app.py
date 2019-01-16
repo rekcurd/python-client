@@ -3,7 +3,8 @@
 
 
 from drucker import Drucker
-from drucker.utils import PredictLabel, PredictResult, EvaluateResult
+from drucker.utils import PredictLabel, PredictResult, EvaluateResult, EvaluateResultDetail, EvaluateDetail
+from typing import List, Generator
 
 
 class DummyApp(Drucker):
@@ -17,4 +18,7 @@ class DummyApp(Drucker):
         pass
 
     def evaluate(self, file: bytes) -> EvaluateResult:
+        pass
+
+    def get_evaluate_detail(self, file_path: str, results: List[EvaluateResultDetail]) -> Generator[EvaluateDetail, None, None]:
         pass
