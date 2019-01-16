@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__project__ = 'drucker_client'
-__version__ = "0.4.3"
+from drucker_client import _project
+from drucker_client import _version
+
+__project__ = _project.__project__
+__version__ = _version.__version__
 
 from .drucker_worker_client import DruckerWorkerClient
