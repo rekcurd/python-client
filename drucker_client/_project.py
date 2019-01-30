@@ -1,1 +1,1 @@
-__project__ = 'drucker_client'
+__project__ = 'rekcurd_client'
