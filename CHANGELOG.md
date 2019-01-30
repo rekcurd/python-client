@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.4.4](https://github.com/rekcurd/drucker-client/tree/v0.4.4) (2019-01-15)
+[Full Changelog](https://github.com/rekcurd/drucker-client/compare/v0.4.3...v0.4.4)
+
+**Merged pull requests:**
+
+- Add slack notification [\#13](https://github.com/rekcurd/drucker-client/pull/13) ([keigohtr](https://github.com/keigohtr))
+
 ## [v0.4.3](https://github.com/rekcurd/drucker-client/tree/v0.4.3) (2018-12-26)
 [Full Changelog](https://github.com/rekcurd/drucker-client/compare/v0.4.2...v0.4.3)
 
