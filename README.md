@@ -1,29 +1,29 @@
 # rekcurd-client
 
-[![Build Status](https://travis-ci.com/rekcurd/drucker-client.svg?branch=master)](https://travis-ci.com/rekcurd/drucker-client)
+[![Build Status](https://travis-ci.com/rekcurd/python-client.svg?branch=master)](https://travis-ci.com/rekcurd/python-client)
 [![PyPI version](https://badge.fury.io/py/rekcurd-client.svg)](https://badge.fury.io/py/rekcurd-client)
-[![codecov](https://codecov.io/gh/rekcurd/drucker-client/branch/master/graph/badge.svg)](https://codecov.io/gh/rekcurd/drucker-client "Non-generated packages only")
+[![codecov](https://codecov.io/gh/rekcurd/python-client/branch/master/graph/badge.svg)](https://codecov.io/gh/rekcurd/python-client "Non-generated packages only")
 [![pypi supported versions](https://img.shields.io/pypi/pyversions/rekcurd-client.svg)](https://pypi.python.org/pypi/rekcurd-client)
 
 Rekcurd client is the project for integrating ML module. Any Rekcurd service is connectable. It can connect the Rekcurd service on Kubernetes.
 
 
 ## Parent Project
-https://github.com/rekcurd/drucker-parent
+https://github.com/rekcurd/community
 
 
 ## Components
-- [Rekcurd](https://github.com/rekcurd/drucker): Project for serving ML module.
-- [Rekcurd-dashboard](https://github.com/rekcurd/drucker-dashboard): Project for managing ML model and deploying ML module.
-- [Rekcurd-client](https://github.com/rekcurd/drucker-client) (here): Project for integrating ML module. 
+- [Rekcurd](https://github.com/rekcurd/python-rekcurd): Project for serving ML module.
+- [Rekcurd-dashboard](https://github.com/rekcurd/dashboard): Project for managing ML model and deploying ML module.
+- [Rekcurd-client](https://github.com/rekcurd/python-client) (here): Project for integrating ML module. 
 
 
 ## Installation
 From source:
 
 ```
-git clone --recursive https://github.com/rekcurd/drucker-client.git
-cd drucker-client
+git clone --recursive https://github.com/rekcurd/python-client.git
+cd python-client
 python setup.py install
 ```
 

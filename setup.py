@@ -56,7 +56,7 @@ setup(
     author_email="drucker.developers@gmail.com",
     author="Drucker team and contributors",
     license="Apache License Version 2.0",
-    url="https://github.com/drucker/drucker-client",
+    url="https://github.com/rekcurd/python-client",
     keywords=["Drucker", "Kubernetes", "Python client", "gRPC"],
     install_requires=REQUIRES,
     tests_require=TESTS_REQUIRES,
