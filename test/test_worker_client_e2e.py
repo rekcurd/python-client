@@ -40,7 +40,7 @@ def patch_predictor(input_type, output_type):
 
 
 class DruckerWorkerClientTestE2E(unittest.TestCase):
-    """Tests for DruckerWorkerClient. This test is e2e test between python-rekcurd and python-client."""
+    """Tests for DruckerWorkerClient. This test is e2e test between rekcurd-python and python-client."""
 
     def fake_string_input(self):
         return 'Drucker'
