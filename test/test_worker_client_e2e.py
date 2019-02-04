@@ -2,13 +2,13 @@ import grpc
 from concurrent import futures
 
 from . import *
-from drucker_client.protobuf import drucker_pb2_grpc
+from rekcurd_client.protobuf import rekcurd_pb2_grpc
 import unittest
 from functools import wraps
 from unittest.mock import patch, Mock
 
-from drucker.utils import PredictResult
-import drucker_client.drucker_worker_client
+from rekcurd.utils import PredictResult
+import rekcurd_client.rekcurd_worker_client
 
 
 def patch_predictor(input_type, output_type):
@@ -17,11 +17,11 @@ def patch_predictor(input_type, output_type):
     """
 
     _prediction_value_map = {
-        Type.STRING: PredictResult('Drucker', 1.0, option={}),
+        Type.STRING: PredictResult('Rekcurd', 1.0, option={}),
         Type.BYTES: PredictResult(b'\x8f\xfa;\xc8a\xa3T%', 1.0, option={}),
         Type.ARRAY_INT: PredictResult([2, 3, 5, 7], [1.0, 1.0, 1.0, 1.0], option={}),
         Type.ARRAY_FLOAT: PredictResult([0.78341155, 0.03166816, 0.92745938], [1.0, 1.0, 1.0], option={}),
-        Type.ARRAY_STRING: PredictResult(['Drucker', 'is', 'awesome'], [1.0, 1.0, 1.0], option={}),
+        Type.ARRAY_STRING: PredictResult(['Rekcurd', 'is', 'awesome'], [1.0, 1.0, 1.0], option={}),
     }
 
     def test_method(func):
@@ -39,11 +39,11 @@ def patch_predictor(input_type, output_type):
     return test_method
 
 
-class DruckerWorkerClientTestE2E(unittest.TestCase):
-    """Tests for DruckerWorkerClient. This test is e2e test between rekcurd-python and python-client."""
+class RekcurdWorkerClientTestE2E(unittest.TestCase):
+    """Tests for RekcurdWorkerClient. This test is e2e test between rekcurd-python and python-client."""
 
     def fake_string_input(self):
-        return 'Drucker'
+        return 'Rekcurd'
 
     def fake_bytes_input(self):
         return b'u\x95jD\x0c\xf4\xf4{\xa6\xd7'
@@ -56,7 +56,7 @@ class DruckerWorkerClientTestE2E(unittest.TestCase):
                 0.3863864, 0.33985784]
 
     def fake_arrstring_input(self):
-        return ['Drucker', 'is', 'great']
+        return ['Rekcurd', 'is', 'great']
 
     def assertStringResponse(self, response):
         self.assertEqual(response.__class__.__name__, "StringOutput")
@@ -80,14 +80,14 @@ class DruckerWorkerClientTestE2E(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
-        drucker_pb2_grpc.add_DruckerWorkerServicer_to_server(
-            drucker.drucker_worker_servicer.DruckerWorkerServicer(
+        rekcurd_pb2_grpc.add_RekcurdWorkerServicer_to_server(
+            rekcurd.rekcurd_worker_servicer.RekcurdWorkerServicer(
                 logger=service_logger, app=app),
             server)
         server.add_insecure_port("[::]:5000")
         server.start()
         cls.server = server
-        cls.client = drucker_client.drucker_worker_client.DruckerWorkerClient(logger=client_logger, host='127.0.0.1:5000')
+        cls.client = rekcurd_client.rekcurd_worker_client.RekcurdWorkerClient(logger=client_logger, host='127.0.0.1:5000')
 
     @classmethod
     def tearDownClass(cls):

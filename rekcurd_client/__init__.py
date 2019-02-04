@@ -1,4 +1,4 @@
-# Copyright 2018 The Drucker Authors.
+# Copyright 2018 The Rekcurd Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from drucker_client import _project
-from drucker_client import _version
+from rekcurd_client import _project
+from rekcurd_client import _version
 
 __project__ = _project.__project__
 __version__ = _version.__version__
 
-from .drucker_worker_client import DruckerWorkerClient
+from .rekcurd_worker_client import RekcurdWorkerClient

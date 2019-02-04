@@ -1,17 +1,17 @@
 import os
 
-from drucker.logger import JsonServiceLogger, JsonSystemLogger
-import drucker.drucker_worker_servicer
+from rekcurd.logger import JsonServiceLogger, JsonSystemLogger
+import rekcurd.rekcurd_worker_servicer
 
 from test.dummy_app import DummyApp
-from drucker_client.logger import logger
+from rekcurd_client.logger import logger
 
 
-os.environ["DRUCKER_TEST_MODE"] = "True"
-os.environ["DRUCKER_SETTINGS_YAML"] = "test/test-settings.yml"
+os.environ["REKCURD_TEST_MODE"] = "True"
+os.environ["REKCURD_SETTINGS_YAML"] = "test/test-settings.yml"
 
 app = DummyApp()
 service_logger = JsonServiceLogger(app.config)
 system_logger = JsonSystemLogger(app.config)
-Type = drucker.drucker_worker_servicer.DruckerWorkerServicer.Type
+Type = rekcurd.rekcurd_worker_servicer.RekcurdWorkerServicer.Type
 client_logger = logger

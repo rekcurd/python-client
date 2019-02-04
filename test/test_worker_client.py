@@ -5,23 +5,23 @@ import grpc
 from grpc.framework.foundation import logging_pool
 import grpc_testing
 
-from drucker_client.protobuf import drucker_pb2
+from rekcurd_client.protobuf import rekcurd_pb2
 from . import _client_application
 
 
-target_service = drucker_pb2.DESCRIPTOR.services_by_name['DruckerWorker']
+target_service = rekcurd_pb2.DESCRIPTOR.services_by_name['RekcurdWorker']
 
 
-class DruckerWorkerClientTest(unittest.TestCase):
+class RekcurdWorkerClientTest(unittest.TestCase):
 
     def setUp(self):
         self._client_execution_thread_pool = logging_pool.pool(1)
         self._fake_time = grpc_testing.strict_fake_time(time.time())
         self._real_time = grpc_testing.strict_real_time()
         self._fake_time_channel = grpc_testing.channel(
-            drucker_pb2.DESCRIPTOR.services_by_name.values(), self._fake_time)
+            rekcurd_pb2.DESCRIPTOR.services_by_name.values(), self._fake_time)
         self._real_time_channel = grpc_testing.channel(
-            drucker_pb2.DESCRIPTOR.services_by_name.values(), self._real_time)
+            rekcurd_pb2.DESCRIPTOR.services_by_name.values(), self._real_time)
 
     def tearDown(self):
         self._client_execution_thread_pool.shutdown(wait=True)
@@ -38,7 +38,7 @@ class DruckerWorkerClientTest(unittest.TestCase):
                       grpc.StatusCode.OK, '')
         application_return_value = application_future.result()
 
-        self.assertEqual(invocation_metadata[0], ('x-rekcurd-application-name', 'drucker-sample'))
+        self.assertEqual(invocation_metadata[0], ('x-rekcurd-application-name', 'rekcurd-sample'))
         self.assertEqual(invocation_metadata[1], ('x-rekcurd-sevice-level', 'development'))
 
     def test_String_String(self):
