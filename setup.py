@@ -61,8 +61,8 @@ setup(
     install_requires=REQUIRES,
     tests_require=TESTS_REQUIRES,
     extras_require=EXTRAS,
-    packages=['rekcurd_client', 'drucker_client.logger',
-              'drucker_client.protobuf'],
+    packages=['rekcurd_client', 'rekcurd_client.logger',
+              'rekcurd_client.protobuf'],
     include_package_data=True,
     long_description=LONG_DESCRIPTION,
     classifiers=[
