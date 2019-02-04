@@ -1,76 +1,76 @@
 # Change Log
 
-## [v0.4.5](https://github.com/rekcurd/drucker-client/tree/v0.4.5) (2019-01-30)
-[Full Changelog](https://github.com/rekcurd/drucker-client/compare/v0.4.4...v0.4.5)
+## [v0.4.5](https://github.com/rekcurd/python-client/tree/v0.4.5) (2019-01-30)
+[Full Changelog](https://github.com/rekcurd/python-client/compare/v0.4.4...v0.4.5)
 
 **Merged pull requests:**
 
-- Unittest py37 support [\#17](https://github.com/rekcurd/drucker-client/pull/17) ([keigohtr](https://github.com/keigohtr))
-- fix DummyApp in unittest [\#15](https://github.com/rekcurd/drucker-client/pull/15) ([yuki-mt](https://github.com/yuki-mt))
+- Unittest py37 support [\#17](https://github.com/rekcurd/python-client/pull/17) ([keigohtr](https://github.com/keigohtr))
+- fix DummyApp in unittest [\#15](https://github.com/rekcurd/python-client/pull/15) ([yuki-mt](https://github.com/yuki-mt))
 
-## [v0.4.4](https://github.com/rekcurd/drucker-client/tree/v0.4.4) (2019-01-15)
-[Full Changelog](https://github.com/rekcurd/drucker-client/compare/v0.4.3...v0.4.4)
-
-**Merged pull requests:**
-
-- Add slack notification [\#13](https://github.com/rekcurd/drucker-client/pull/13) ([keigohtr](https://github.com/keigohtr))
-
-## [v0.4.3](https://github.com/rekcurd/drucker-client/tree/v0.4.3) (2018-12-26)
-[Full Changelog](https://github.com/rekcurd/drucker-client/compare/v0.4.2...v0.4.3)
+## [v0.4.4](https://github.com/rekcurd/python-client/tree/v0.4.4) (2019-01-15)
+[Full Changelog](https://github.com/rekcurd/python-client/compare/v0.4.3...v0.4.4)
 
 **Merged pull requests:**
 
-- Update README.md [\#12](https://github.com/rekcurd/drucker-client/pull/12) ([keigohtr](https://github.com/keigohtr))
-- Istio support [\#11](https://github.com/rekcurd/drucker-client/pull/11) ([keigohtr](https://github.com/keigohtr))
+- Add slack notification [\#13](https://github.com/rekcurd/python-client/pull/13) ([keigohtr](https://github.com/keigohtr))
 
-## [v0.4.2](https://github.com/rekcurd/drucker-client/tree/v0.4.2) (2018-11-28)
-[Full Changelog](https://github.com/rekcurd/drucker-client/compare/v0.4.1...v0.4.2)
-
-## [v0.4.1](https://github.com/rekcurd/drucker-client/tree/v0.4.1) (2018-11-20)
-[Full Changelog](https://github.com/rekcurd/drucker-client/compare/v0.4.0...v0.4.1)
+## [v0.4.3](https://github.com/rekcurd/python-client/tree/v0.4.3) (2018-12-26)
+[Full Changelog](https://github.com/rekcurd/python-client/compare/v0.4.2...v0.4.3)
 
 **Merged pull requests:**
 
-- Prepare for release v0.4.1 [\#9](https://github.com/rekcurd/drucker-client/pull/9) ([keigohtr](https://github.com/keigohtr))
+- Update README.md [\#12](https://github.com/rekcurd/python-client/pull/12) ([keigohtr](https://github.com/keigohtr))
+- Istio support [\#11](https://github.com/rekcurd/python-client/pull/11) ([keigohtr](https://github.com/keigohtr))
 
-## [v0.4.0](https://github.com/rekcurd/drucker-client/tree/v0.4.0) (2018-11-07)
-[Full Changelog](https://github.com/rekcurd/drucker-client/compare/v0.3.4...v0.4.0)
+## [v0.4.2](https://github.com/rekcurd/python-client/tree/v0.4.2) (2018-11-28)
+[Full Changelog](https://github.com/rekcurd/python-client/compare/v0.4.1...v0.4.2)
 
-**Merged pull requests:**
-
-- Add badge [\#8](https://github.com/rekcurd/drucker-client/pull/8) ([keigohtr](https://github.com/keigohtr))
-- Create CONTRIBUTING.md [\#7](https://github.com/rekcurd/drucker-client/pull/7) ([syleeeee](https://github.com/syleeeee))
-- Create CODE\_OF\_CONDUCT.md [\#6](https://github.com/rekcurd/drucker-client/pull/6) ([syleeeee](https://github.com/syleeeee))
-- Pipnize drucker client [\#5](https://github.com/rekcurd/drucker-client/pull/5) ([keigohtr](https://github.com/keigohtr))
-
-## [v0.3.4](https://github.com/rekcurd/drucker-client/tree/v0.3.4) (2018-10-03)
-[Full Changelog](https://github.com/rekcurd/drucker-client/compare/v0.3.3...v0.3.4)
-
-## [v0.3.3](https://github.com/rekcurd/drucker-client/tree/v0.3.3) (2018-08-29)
-[Full Changelog](https://github.com/rekcurd/drucker-client/compare/v0.3.2...v0.3.3)
+## [v0.4.1](https://github.com/rekcurd/python-client/tree/v0.4.1) (2018-11-20)
+[Full Changelog](https://github.com/rekcurd/python-client/compare/v0.4.0...v0.4.1)
 
 **Merged pull requests:**
 
-- Refactor `sys.path.append` related code [\#3](https://github.com/rekcurd/drucker-client/pull/3) ([keigohtr](https://github.com/keigohtr))
+- Prepare for release v0.4.1 [\#9](https://github.com/rekcurd/python-client/pull/9) ([keigohtr](https://github.com/keigohtr))
 
-## [v0.3.2](https://github.com/rekcurd/drucker-client/tree/v0.3.2) (2018-08-22)
-[Full Changelog](https://github.com/rekcurd/drucker-client/compare/v0.3.1...v0.3.2)
-
-## [v0.3.1](https://github.com/rekcurd/drucker-client/tree/v0.3.1) (2018-08-15)
-[Full Changelog](https://github.com/rekcurd/drucker-client/compare/v0.3.0...v0.3.1)
+## [v0.4.0](https://github.com/rekcurd/python-client/tree/v0.4.0) (2018-11-07)
+[Full Changelog](https://github.com/rekcurd/python-client/compare/v0.3.4...v0.4.0)
 
 **Merged pull requests:**
 
-- \[Hotfix\] Change code generator [\#2](https://github.com/rekcurd/drucker-client/pull/2) ([keigohtr](https://github.com/keigohtr))
+- Add badge [\#8](https://github.com/rekcurd/python-client/pull/8) ([keigohtr](https://github.com/keigohtr))
+- Create CONTRIBUTING.md [\#7](https://github.com/rekcurd/python-client/pull/7) ([syleeeee](https://github.com/syleeeee))
+- Create CODE\_OF\_CONDUCT.md [\#6](https://github.com/rekcurd/python-client/pull/6) ([syleeeee](https://github.com/syleeeee))
+- Pipnize drucker client [\#5](https://github.com/rekcurd/python-client/pull/5) ([keigohtr](https://github.com/keigohtr))
 
-## [v0.3.0](https://github.com/rekcurd/drucker-client/tree/v0.3.0) (2018-08-08)
-[Full Changelog](https://github.com/rekcurd/drucker-client/compare/v0.2.0...v0.3.0)
+## [v0.3.4](https://github.com/rekcurd/python-client/tree/v0.3.4) (2018-10-03)
+[Full Changelog](https://github.com/rekcurd/python-client/compare/v0.3.3...v0.3.4)
+
+## [v0.3.3](https://github.com/rekcurd/python-client/tree/v0.3.3) (2018-08-29)
+[Full Changelog](https://github.com/rekcurd/python-client/compare/v0.3.2...v0.3.3)
 
 **Merged pull requests:**
 
-- Add version info to endpoint [\#1](https://github.com/rekcurd/drucker-client/pull/1) ([keigohtr](https://github.com/keigohtr))
+- Refactor `sys.path.append` related code [\#3](https://github.com/rekcurd/python-client/pull/3) ([keigohtr](https://github.com/keigohtr))
 
-## [v0.2.0](https://github.com/rekcurd/drucker-client/tree/v0.2.0) (2018-07-17)
+## [v0.3.2](https://github.com/rekcurd/python-client/tree/v0.3.2) (2018-08-22)
+[Full Changelog](https://github.com/rekcurd/python-client/compare/v0.3.1...v0.3.2)
+
+## [v0.3.1](https://github.com/rekcurd/python-client/tree/v0.3.1) (2018-08-15)
+[Full Changelog](https://github.com/rekcurd/python-client/compare/v0.3.0...v0.3.1)
+
+**Merged pull requests:**
+
+- \[Hotfix\] Change code generator [\#2](https://github.com/rekcurd/python-client/pull/2) ([keigohtr](https://github.com/keigohtr))
+
+## [v0.3.0](https://github.com/rekcurd/python-client/tree/v0.3.0) (2018-08-08)
+[Full Changelog](https://github.com/rekcurd/python-client/compare/v0.2.0...v0.3.0)
+
+**Merged pull requests:**
+
+- Add version info to endpoint [\#1](https://github.com/rekcurd/python-client/pull/1) ([keigohtr](https://github.com/keigohtr))
+
+## [v0.2.0](https://github.com/rekcurd/python-client/tree/v0.2.0) (2018-07-17)
 
 
 \* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
