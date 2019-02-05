@@ -1,29 +1,29 @@
 # rekcurd-client
 
-[![Build Status](https://travis-ci.com/rekcurd/drucker-client.svg?branch=master)](https://travis-ci.com/rekcurd/drucker-client)
+[![Build Status](https://travis-ci.com/rekcurd/python-client.svg?branch=master)](https://travis-ci.com/rekcurd/python-client)
 [![PyPI version](https://badge.fury.io/py/rekcurd-client.svg)](https://badge.fury.io/py/rekcurd-client)
-[![codecov](https://codecov.io/gh/rekcurd/drucker-client/branch/master/graph/badge.svg)](https://codecov.io/gh/rekcurd/drucker-client "Non-generated packages only")
+[![codecov](https://codecov.io/gh/rekcurd/python-client/branch/master/graph/badge.svg)](https://codecov.io/gh/rekcurd/python-client "Non-generated packages only")
 [![pypi supported versions](https://img.shields.io/pypi/pyversions/rekcurd-client.svg)](https://pypi.python.org/pypi/rekcurd-client)
 
 Rekcurd client is the project for integrating ML module. Any Rekcurd service is connectable. It can connect the Rekcurd service on Kubernetes.
 
 
 ## Parent Project
-https://github.com/rekcurd/drucker-parent
+https://github.com/rekcurd/community
 
 
 ## Components
-- [Rekcurd](https://github.com/rekcurd/drucker): Project for serving ML module.
-- [Rekcurd-dashboard](https://github.com/rekcurd/drucker-dashboard): Project for managing ML model and deploying ML module.
-- [Rekcurd-client](https://github.com/rekcurd/drucker-client) (here): Project for integrating ML module. 
+- [Rekcurd](https://github.com/rekcurd/rekcurd-python): Project for serving ML module.
+- [Rekcurd-dashboard](https://github.com/rekcurd/dashboard): Project for managing ML model and deploying ML module.
+- [Rekcurd-client](https://github.com/rekcurd/python-client) (here): Project for integrating ML module. 
 
 
 ## Installation
 From source:
 
 ```
-git clone --recursive https://github.com/rekcurd/drucker-client.git
-cd drucker-client
+git clone --recursive https://github.com/rekcurd/python-client.git
+cd python-client
 python setup.py install
 ```
 
@@ -37,12 +37,12 @@ pip install rekcurd_client
 Example code is available [here](./example/sample.py).
 
 ```python
-from drucker_client import DruckerWorkerClient
-from drucker_client.logger import logger
+from rekcurd_client import RekcurdWorkerClient
+from rekcurd_client.logger import logger
 
 
 host = 'localhost:5000'
-client = DruckerWorkerClient(logger=logger, host=host)
+client = RekcurdWorkerClient(logger=logger, host=host)
 
 input = [0,0,0,1,11,0,0,0,0,0,
          0,7,8,0,0,0,0,0,1,13,
@@ -57,14 +57,14 @@ response = client.run_predict_arrint_arrint(input)
 When you use Kubernetes and deploy Rekcurd service via Rekcurd dashboard, you can access your Rekcurd service like the below.
 
 ```python
-from drucker_client import DruckerWorkerClient
-from drucker_client.logger import logger
+from rekcurd_client import RekcurdWorkerClient
+from rekcurd_client.logger import logger
 
 
 domain = 'example.com'
-app = 'drucker-sample'
+app = 'rekcurd-sample'
 env = 'development'
-client = DruckerWorkerClient(logger=logger, domain=domain, app=app, env=env)
+client = RekcurdWorkerClient(logger=logger, domain=domain, app=app, env=env)
 
 input = [0,0,0,1,11,0,0,0,0,0,
          0,7,8,0,0,0,0,0,1,13,
@@ -76,7 +76,7 @@ input = [0,0,0,1,11,0,0,0,0,0,
 response = client.run_predict_arrint_arrint(input)
 ```
 
-### DruckerWorkerClient
+### RekcurdWorkerClient
 You need to use an appropriate method for your Rekcurd service. The methods are generated according to the input and output formats. *V* is the length of feature vector. *M* is the number of classes. If your algorithm is a binary classifier, you set *M* to 1. If your algorithm is a multi-class classifier, you set *M* to the number of classes.
 
 |method |input: data<BR>(required) |input: option |output: label<BR>(required) |output: score<BR>(required) |output: option |

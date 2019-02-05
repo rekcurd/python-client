@@ -2,17 +2,17 @@
 # -*- coding: utf-8 -*-
 
 
-from drucker_client import DruckerWorkerClient
-from drucker_client.logger import logger
+from rekcurd_client import RekcurdWorkerClient
+from rekcurd_client.logger import logger
 
 
 host = 'localhost:5000'
-client = DruckerWorkerClient(logger=logger, host=host)
+client = RekcurdWorkerClient(logger=logger, host=host)
 
 #domain = 'example.com'
-#app = 'drucker-sample'
+#app = 'rekcurd-sample'
 #env = 'development'
-#client = DruckerWorkerClient(logger=logger, domain=domain, app=app, env=env)
+#client = RekcurdWorkerClient(logger=logger, domain=domain, app=app, env=env)
 
 input = [0,0,0,1,11,0,0,0,0,0,
          0,7,8,0,0,0,0,0,1,13,

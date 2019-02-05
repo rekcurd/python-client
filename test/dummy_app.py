@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 
 
-from drucker import Drucker
-from drucker.utils import PredictLabel, PredictResult, EvaluateResult, EvaluateResultDetail, EvaluateDetail
+from rekcurd import Rekcurd
+from rekcurd.utils import PredictLabel, PredictResult, EvaluateResult, EvaluateResultDetail, EvaluateDetail
 from typing import List, Generator
 
 
-class DummyApp(Drucker):
+class DummyApp(Rekcurd):
     def __init__(self, config_file: str = None):
         super().__init__(config_file)
 

@@ -25,7 +25,7 @@ class JsonSystemLogger(SystemLoggerInterface):
             log_record['host'] = gethostname()
             log_record['timestamp'] = int(time.time() * 1000) / 1000
 
-    def __init__(self, logger_name: str = 'drucker_client', log_level: int = logging.NOTSET) -> None:
+    def __init__(self, logger_name: str = 'rekcurd_client', log_level: int = logging.NOTSET) -> None:
         """
         Constructor
         :param logger_name: logger name

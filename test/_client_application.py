@@ -3,12 +3,12 @@ import enum
 import threading
 import grpc
 
-from drucker.utils import PredictResult
+from rekcurd.utils import PredictResult
 
-import drucker_client.drucker_worker_client
-from drucker_client.protobuf import drucker_pb2_grpc
-from drucker_client.logger import logger
-from drucker_client import DruckerWorkerClient
+import rekcurd_client.rekcurd_worker_client
+from rekcurd_client.protobuf import rekcurd_pb2_grpc
+from rekcurd_client.logger import logger
+from rekcurd_client import RekcurdWorkerClient
 
 
 @enum.unique
@@ -98,21 +98,21 @@ class _Pipe(object):
 
 @enum.unique
 class Request(enum.Enum):
-    STRING_REQUEST = 'Drucker'
+    STRING_REQUEST = 'Rekcurd'
     BYTES_REQUEST = b'u\x95jD\x0c\xf4\xf4{\xa6\xd7'
     ARRAY_INT_REQUEST = [124, 117,   2, 216]
     ARRAY_FLOAT_REQUEST = [0.51558887, 0.07656534, 0.64258131, 0.45239403, 0.53738411,
                            0.3863864, 0.33985784]
-    ARRAY_STRING_REQUEST = ['Drucker', 'is', 'great']
+    ARRAY_STRING_REQUEST = ['Rekcurd', 'is', 'great']
 
 
 @enum.unique
 class Response(enum.Enum):
-    STRING_RESPONSE = PredictResult('Drucker', 1.0, option={})
+    STRING_RESPONSE = PredictResult('Rekcurd', 1.0, option={})
     BYTES_RESPONSE = PredictResult(b'\x8f\xfa;\xc8a\xa3T%', 1.0, option={})
     ARRAY_INT_RESPONSE = PredictResult([2, 3, 5, 7], [1.0, 1.0, 1.0, 1.0], option={})
     ARRAY_FLOAT_RESPONSE = PredictResult([0.78341155, 0.03166816, 0.92745938], [1.0, 1.0, 1.0], option={})
-    ARRAY_STRING_RESPONSE = PredictResult(['Drucker', 'is', 'awesome'], [1.0, 1.0, 1.0], option={})
+    ARRAY_STRING_RESPONSE = PredictResult(['Rekcurd', 'is', 'awesome'], [1.0, 1.0, 1.0], option={})
 
 
 def _assertStringResponse(response):
@@ -156,7 +156,7 @@ def _assertArrStringResponse(response):
     return False
 
 
-def _run_string_string(client: DruckerWorkerClient):
+def _run_string_string(client: RekcurdWorkerClient):
     response = client.run_predict_string_string(Request.STRING_REQUEST.value)
     if _assertStringResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -164,7 +164,7 @@ def _run_string_string(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_string_bytes(client: DruckerWorkerClient):
+def _run_string_bytes(client: RekcurdWorkerClient):
     response_iterator = client.run_predict_string_bytes(Request.STRING_REQUEST.value)
     if _assertBytesResponse(response_iterator):
         return _SATISFACTORY_OUTCOME
@@ -172,7 +172,7 @@ def _run_string_bytes(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_string_arrint(client: DruckerWorkerClient):
+def _run_string_arrint(client: RekcurdWorkerClient):
     response = client.run_predict_string_arrint(Request.STRING_REQUEST.value)
     if _assertArrIntResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -180,7 +180,7 @@ def _run_string_arrint(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_string_arrfloat(client: DruckerWorkerClient):
+def _run_string_arrfloat(client: RekcurdWorkerClient):
     response = client.run_predict_string_arrfloat(Request.STRING_REQUEST.value)
     if _assertArrFloatResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -188,7 +188,7 @@ def _run_string_arrfloat(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_string_arrstring(client: DruckerWorkerClient):
+def _run_string_arrstring(client: RekcurdWorkerClient):
     response = client.run_predict_string_arrstring(Request.STRING_REQUEST.value)
     if _assertArrStringResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -196,7 +196,7 @@ def _run_string_arrstring(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_bytes_string(client: DruckerWorkerClient):
+def _run_bytes_string(client: RekcurdWorkerClient):
     response, call = client.stub.Predict_Bytes_String.with_call(
         iter((Request.BYTES_REQUEST.value,) * 3))
     if (Response.STRING_RESPONSE.value == response and
@@ -206,7 +206,7 @@ def _run_bytes_string(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_bytes_bytes(client: DruckerWorkerClient):
+def _run_bytes_bytes(client: RekcurdWorkerClient):
     request_pipe = _Pipe()
     response_iterator = client.stub.Predict_Bytes_Bytes(iter(request_pipe))
     request_pipe.add(Request.BYTES_REQUEST.value)
@@ -228,7 +228,7 @@ def _run_bytes_bytes(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_bytes_arrint(client: DruckerWorkerClient):
+def _run_bytes_arrint(client: RekcurdWorkerClient):
     response, call = client.stub.Predict_Bytes_ArrInt.with_call(
         iter((Request.BYTES_REQUEST.value,) * 3))
     if (Response.ARRAY_INT_RESPONSE.value == response and
@@ -238,7 +238,7 @@ def _run_bytes_arrint(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_bytes_arrfloat(client: DruckerWorkerClient):
+def _run_bytes_arrfloat(client: RekcurdWorkerClient):
     response, call = client.stub.Predict_Bytes_ArrFloat.with_call(
         iter((Request.BYTES_REQUEST.value,) * 3))
     if (Response.ARRAY_FLOAT_RESPONSE.value == response and
@@ -248,7 +248,7 @@ def _run_bytes_arrfloat(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_bytes_arrstring(client: DruckerWorkerClient):
+def _run_bytes_arrstring(client: RekcurdWorkerClient):
     response, call = client.stub.Predict_Bytes_ArrString.with_call(
         iter((Request.BYTES_REQUEST.value,) * 3))
     if (Response.ARRAY_STRING_RESPONSE.value == response and
@@ -258,7 +258,7 @@ def _run_bytes_arrstring(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_arrint_string(client: DruckerWorkerClient):
+def _run_arrint_string(client: RekcurdWorkerClient):
     response = client.run_predict_arrint_string(Request.ARRAY_INT_REQUEST.value)
     if _assertStringResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -266,7 +266,7 @@ def _run_arrint_string(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_arrint_bytes(client: DruckerWorkerClient):
+def _run_arrint_bytes(client: RekcurdWorkerClient):
     response_iterator = client.run_predict_arrint_bytes(Request.ARRAY_INT_REQUEST.value)
     if _assertBytesResponse(response_iterator):
         return _SATISFACTORY_OUTCOME
@@ -274,7 +274,7 @@ def _run_arrint_bytes(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_arrint_arrint(client: DruckerWorkerClient):
+def _run_arrint_arrint(client: RekcurdWorkerClient):
     response = client.run_predict_arrint_arrint(Request.ARRAY_INT_REQUEST.value)
     if _assertArrIntResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -282,7 +282,7 @@ def _run_arrint_arrint(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_arrint_arrfloat(client: DruckerWorkerClient):
+def _run_arrint_arrfloat(client: RekcurdWorkerClient):
     response = client.run_predict_arrint_arrfloat(Request.ARRAY_INT_REQUEST.value)
     if _assertArrFloatResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -290,7 +290,7 @@ def _run_arrint_arrfloat(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_arrint_arrstring(client: DruckerWorkerClient):
+def _run_arrint_arrstring(client: RekcurdWorkerClient):
     response = client.run_predict_arrint_arrstring(Request.ARRAY_INT_REQUEST.value)
     if _assertArrStringResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -298,7 +298,7 @@ def _run_arrint_arrstring(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_arrfloat_string(client: DruckerWorkerClient):
+def _run_arrfloat_string(client: RekcurdWorkerClient):
     response = client.run_predict_arrfloat_string(Request.ARRAY_FLOAT_REQUEST.value)
     if _assertStringResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -306,7 +306,7 @@ def _run_arrfloat_string(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_arrfloat_bytes(client: DruckerWorkerClient):
+def _run_arrfloat_bytes(client: RekcurdWorkerClient):
     response_iterator = client.run_predict_arrfloat_bytes(Request.ARRAY_FLOAT_REQUEST.value)
     if _assertBytesResponse(response_iterator):
         return _SATISFACTORY_OUTCOME
@@ -314,7 +314,7 @@ def _run_arrfloat_bytes(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_arrfloat_arrint(client: DruckerWorkerClient):
+def _run_arrfloat_arrint(client: RekcurdWorkerClient):
     response = client.run_predict_arrfloat_arrint(Request.ARRAY_FLOAT_REQUEST.value)
     if _assertArrIntResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -322,7 +322,7 @@ def _run_arrfloat_arrint(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_arrfloat_arrfloat(client: DruckerWorkerClient):
+def _run_arrfloat_arrfloat(client: RekcurdWorkerClient):
     response = client.run_predict_arrfloat_arrfloat(Request.ARRAY_FLOAT_REQUEST.value)
     if _assertArrFloatResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -330,7 +330,7 @@ def _run_arrfloat_arrfloat(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_arrfloat_arrstring(client: DruckerWorkerClient):
+def _run_arrfloat_arrstring(client: RekcurdWorkerClient):
     response = client.run_predict_arrfloat_arrstring(Request.ARRAY_FLOAT_REQUEST.value)
     if _assertArrStringResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -338,7 +338,7 @@ def _run_arrfloat_arrstring(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_arrstring_string(client: DruckerWorkerClient):
+def _run_arrstring_string(client: RekcurdWorkerClient):
     response = client.run_predict_arrstring_string(Request.ARRAY_STRING_REQUEST.value)
     if _assertStringResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -346,7 +346,7 @@ def _run_arrstring_string(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_arrstring_bytes(client: DruckerWorkerClient):
+def _run_arrstring_bytes(client: RekcurdWorkerClient):
     response_iterator = client.run_predict_arrstring_bytes(Request.ARRAY_STRING_REQUEST.value)
     if _assertBytesResponse(response_iterator):
         return _SATISFACTORY_OUTCOME
@@ -354,7 +354,7 @@ def _run_arrstring_bytes(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_arrstring_arrint(client: DruckerWorkerClient):
+def _run_arrstring_arrint(client: RekcurdWorkerClient):
     response = client.run_predict_arrstring_arrint(Request.ARRAY_STRING_REQUEST.value)
     if _assertArrIntResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -362,7 +362,7 @@ def _run_arrstring_arrint(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_arrstring_arrfloat(client: DruckerWorkerClient):
+def _run_arrstring_arrfloat(client: RekcurdWorkerClient):
     response = client.run_predict_arrstring_arrfloat(Request.ARRAY_STRING_REQUEST.value)
     if _assertArrFloatResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -370,7 +370,7 @@ def _run_arrstring_arrfloat(client: DruckerWorkerClient):
         return _UNSATISFACTORY_OUTCOME
 
 
-def _run_arrstring_arrstring(client: DruckerWorkerClient):
+def _run_arrstring_arrstring(client: RekcurdWorkerClient):
     response = client.run_predict_arrstring_arrstring(Request.ARRAY_STRING_REQUEST.value)
     if _assertArrStringResponse(response):
         return _SATISFACTORY_OUTCOME
@@ -408,8 +408,8 @@ _IMPLEMENTATIONS = {
 
 
 def run(scenario, channel):
-    stub = drucker_pb2_grpc.DruckerWorkerStub(channel)
-    client = drucker_client.drucker_worker_client.DruckerWorkerClient(logger=logger, domain='example.com', app='drucker-sample', env='development')
+    stub = rekcurd_pb2_grpc.RekcurdWorkerStub(channel)
+    client = rekcurd_client.rekcurd_worker_client.RekcurdWorkerClient(logger=logger, domain='example.com', app='rekcurd-sample', env='development')
     client.stub = stub
     try:
         return _IMPLEMENTATIONS[scenario](client)

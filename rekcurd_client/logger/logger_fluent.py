@@ -11,7 +11,7 @@ from .logger_interface import SystemLoggerInterface
 
 class FluentSystemLogger(SystemLoggerInterface):
 
-    def __init__(self, logger_name: str = 'drucker_client', log_level: int = logging.NOTSET) -> None:
+    def __init__(self, logger_name: str = 'rekcurd_client', log_level: int = logging.NOTSET) -> None:
         """
         Constructor
         :param logger_name: logger name
