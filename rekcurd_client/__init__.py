@@ -18,4 +18,4 @@ from rekcurd_client import _version
 __project__ = _project.__project__
 __version__ = _version.__version__
 
-from .rekcurd_worker_client import RekcurdWorkerClient
+from .core import RekcurdWorkerClient
