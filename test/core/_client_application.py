@@ -5,7 +5,7 @@ import grpc
 
 from rekcurd.utils import PredictResult
 
-import rekcurd_client.rekcurd_worker_client
+import rekcurd_client.core.rekcurd_worker_client
 from rekcurd_client.protobuf import rekcurd_pb2_grpc
 from rekcurd_client.logger import logger
 from rekcurd_client import RekcurdWorkerClient
@@ -409,7 +409,7 @@ _IMPLEMENTATIONS = {
 
 def run(scenario, channel):
     stub = rekcurd_pb2_grpc.RekcurdWorkerStub(channel)
-    client = rekcurd_client.rekcurd_worker_client.RekcurdWorkerClient(logger=logger, domain='example.com', app='rekcurd-sample', env='development')
+    client = rekcurd_client.core.rekcurd_worker_client.RekcurdWorkerClient(logger=logger, domain='example.com', app='rekcurd-sample', env='development')
     client.stub = stub
     try:
         return _IMPLEMENTATIONS[scenario](client)

@@ -6,8 +6,8 @@ import traceback
 import types
 import grpc
 
-from .protobuf import rekcurd_pb2, rekcurd_pb2_grpc
-from .logger import SystemLoggerInterface
+from rekcurd_client.protobuf import rekcurd_pb2, rekcurd_pb2_grpc
+from rekcurd_client.logger import SystemLoggerInterface
 
 
 def error_handling(error_response):

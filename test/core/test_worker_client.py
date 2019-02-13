@@ -6,8 +6,7 @@ from grpc.framework.foundation import logging_pool
 import grpc_testing
 
 from rekcurd_client.protobuf import rekcurd_pb2
-from . import _client_application
-
+from test.core import _client_application
 
 target_service = rekcurd_pb2.DESCRIPTOR.services_by_name['RekcurdWorker']
 
