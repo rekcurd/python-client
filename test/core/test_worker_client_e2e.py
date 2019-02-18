@@ -2,13 +2,13 @@ import grpc
 from concurrent import futures
 
 from test import *
+from rekcurd_client import RekcurdWorkerClient
 from rekcurd_client.protobuf import rekcurd_pb2_grpc
 import unittest
 from functools import wraps
 from unittest.mock import patch, Mock
 
 from rekcurd.utils import PredictResult
-import rekcurd_client.core.rekcurd_worker_client
 
 
 def patch_predictor(input_type, output_type):
@@ -81,13 +81,11 @@ class RekcurdWorkerClientTestE2E(unittest.TestCase):
     def setUpClass(cls):
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
         rekcurd_pb2_grpc.add_RekcurdWorkerServicer_to_server(
-            rekcurd.rekcurd_worker_servicer.RekcurdWorkerServicer(
-                logger=service_logger, app=app),
-            server)
+            RekcurdWorkerServicer(app=app, predictor=None), server)
         server.add_insecure_port("[::]:5000")
         server.start()
         cls.server = server
-        cls.client = rekcurd_client.core.rekcurd_worker_client.RekcurdWorkerClient(logger=client_logger, host='127.0.0.1:5000')
+        cls.client = RekcurdWorkerClient(host='127.0.0.1', port=5000)
 
     @classmethod
     def tearDownClass(cls):
