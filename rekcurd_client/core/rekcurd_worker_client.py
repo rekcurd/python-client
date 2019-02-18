@@ -7,7 +7,7 @@ import types
 import grpc
 
 from rekcurd_client.protobuf import rekcurd_pb2, rekcurd_pb2_grpc
-from rekcurd_client.logger import SystemLoggerInterface
+from rekcurd_client.logger import SystemLoggerInterface, JsonSystemLogger
 
 
 def error_handling(error_response):
@@ -39,27 +39,40 @@ def error_handling(error_response):
 
 
 class RekcurdWorkerClient:
-    def __init__(self, logger: SystemLoggerInterface,
-                 host: str = None,
-                 domain: str = None, app: str = None,
-                 env: str = None, version: int = None):
-        self.logger = logger
-        self.stub = None
-        if host is None and (domain is None or app is None or env is None):
-            raise RuntimeError("You must specify url or domain+app+env.")
+    _logger: SystemLoggerInterface = None
 
-        if version is None:
+    def __init__(self, host: str = None, port: int = None,
+                 application_name: str = None, service_level: str = None,
+                 rekcurd_grpc_version: int = None):
+        self._logger = JsonSystemLogger()
+
+        _host = "127.0.0.1"
+        _port = 5000
+        host = host or _host
+        port = int(port or _port)
+
+        if rekcurd_grpc_version is None:
             v_str = rekcurd_pb2.DESCRIPTOR.GetOptions().Extensions[rekcurd_pb2.rekcurd_grpc_proto_version]
         else:
-            v_str = rekcurd_pb2.EnumVersionInfo.Name(version)
+            v_str = rekcurd_pb2.EnumVersionInfo.Name(rekcurd_grpc_version)
 
-        self.__metadata = [('x-rekcurd-application-name', app),
-                           ('x-rekcurd-sevice-level', env),
+        self.__metadata = [('x-rekcurd-application-name', application_name),
+                           ('x-rekcurd-sevice-level', service_level),
                            ('x-rekcurd-grpc-version', v_str)]
-        if host is None:
-            self.__change_domain_app_env(domain, app, env, v_str)
+
+        channel = grpc.insecure_channel("{}:{}".format(host, port))
+        self.stub = rekcurd_pb2_grpc.RekcurdWorkerStub(channel)
+
+    @property
+    def logger(self):
+        return self._logger
+
+    @logger.setter
+    def logger(self, logger: SystemLoggerInterface):
+        if isinstance(logger, SystemLoggerInterface):
+            self._logger = logger
         else:
-            self.__change_host(host)
+            raise TypeError("Invalid logger type.")
 
     def on_error(self, error: Exception):
         """ Postprocessing on error
@@ -74,17 +87,8 @@ class RekcurdWorkerClient:
         self.logger.error(str(error))
         self.logger.error(traceback.format_exc())
 
-    def __change_domain_app_env(self, domain: str, app: str, env: str, version: str):
-        host = "{0}-{1}-{2}.{3}".format(app,version,env,domain)
-        self.__change_host(host)
-
-    def __change_host(self, host: str):
-        channel = grpc.insecure_channel(host)
-        self.stub = rekcurd_pb2_grpc.RekcurdWorkerStub(channel)
-
     def __byte_input_request(self, input, option="{}"):
         yield rekcurd_pb2.BytesInput(input=input, option=rekcurd_pb2.Option(val=option))
-
 
     @error_handling(rekcurd_pb2.StringOutput())
     def run_predict_string_string(self, input, option="{}"):
