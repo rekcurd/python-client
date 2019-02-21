@@ -43,7 +43,7 @@ class RekcurdWorkerClient:
 
     def __init__(self, host: str = None, port: int = None,
                  application_name: str = None, service_level: str = None,
-                 rekcurd_grpc_version: int = None):
+                 rekcurd_grpc_version: str = None):
         self._logger = JsonSystemLogger()
 
         _host = "127.0.0.1"
@@ -52,13 +52,13 @@ class RekcurdWorkerClient:
         port = int(port or _port)
 
         if rekcurd_grpc_version is None:
-            v_str = rekcurd_pb2.DESCRIPTOR.GetOptions().Extensions[rekcurd_pb2.rekcurd_grpc_proto_version]
+            rekcurd_grpc_version = rekcurd_pb2.DESCRIPTOR.GetOptions().Extensions[rekcurd_pb2.rekcurd_grpc_proto_version]
         else:
-            v_str = rekcurd_pb2.EnumVersionInfo.Name(rekcurd_grpc_version)
+            rekcurd_pb2.EnumVersionInfo.Value(rekcurd_grpc_version)
 
         self.__metadata = [('x-rekcurd-application-name', application_name),
                            ('x-rekcurd-sevice-level', service_level),
-                           ('x-rekcurd-grpc-version', v_str)]
+                           ('x-rekcurd-grpc-version', rekcurd_grpc_version)]
 
         channel = grpc.insecure_channel("{}:{}".format(host, port))
         self.stub = rekcurd_pb2_grpc.RekcurdWorkerStub(channel)
