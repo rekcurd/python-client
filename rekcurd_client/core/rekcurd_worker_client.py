@@ -60,7 +60,7 @@ class RekcurdWorkerClient:
                            ('x-rekcurd-sevice-level', service_level),
                            ('x-rekcurd-grpc-version', rekcurd_grpc_version)]
 
-        channel = grpc.insecure_channel("{}:{}".format(host, port))
+        channel = grpc.insecure_channel("{0}:{1}".format(host, port))
         self.stub = rekcurd_pb2_grpc.RekcurdWorkerStub(channel)
 
     @property
