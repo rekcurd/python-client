@@ -1,5 +1,16 @@
 # Change Log
 
+## [v1.0.0](https://github.com/rekcurd/python-client/tree/v1.0.0) (2019-04-26)
+[Full Changelog](https://github.com/rekcurd/python-client/compare/v0.4.5...v1.0.0)
+
+**Merged pull requests:**
+
+- Update documents [\#22](https://github.com/rekcurd/python-client/pull/22) ([keigohtr](https://github.com/keigohtr))
+- Apply latest rekcurd [\#21](https://github.com/rekcurd/python-client/pull/21) ([keigohtr](https://github.com/keigohtr))
+- Add test [\#20](https://github.com/rekcurd/python-client/pull/20) ([keigohtr](https://github.com/keigohtr))
+- update grpc submodule [\#19](https://github.com/rekcurd/python-client/pull/19) ([yuki-mt](https://github.com/yuki-mt))
+- Rename from `drucker` to `rekcurd` [\#18](https://github.com/rekcurd/python-client/pull/18) ([keigohtr](https://github.com/keigohtr))
+
 ## [v0.4.5](https://github.com/rekcurd/python-client/tree/v0.4.5) (2019-01-30)
 [Full Changelog](https://github.com/rekcurd/python-client/compare/v0.4.4...v0.4.5)
 
