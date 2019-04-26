@@ -8,6 +8,7 @@ import unittest
 from functools import wraps
 from unittest.mock import patch, Mock
 
+from rekcurd import RekcurdPack
 from rekcurd.utils import PredictResult
 
 
@@ -81,7 +82,7 @@ class RekcurdWorkerClientTestE2E(unittest.TestCase):
     def setUpClass(cls):
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
         rekcurd_pb2_grpc.add_RekcurdWorkerServicer_to_server(
-            RekcurdWorkerServicer(app=app, predictor=None), server)
+            RekcurdWorkerServicer(RekcurdPack(app, None)), server)
         server.add_insecure_port("[::]:5000")
         server.start()
         cls.server = server

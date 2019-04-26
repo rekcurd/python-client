@@ -15,7 +15,7 @@ https://github.com/rekcurd/community
 ## Components
 - [Rekcurd](https://github.com/rekcurd/rekcurd-python): Project for serving ML module.
 - [Rekcurd-dashboard](https://github.com/rekcurd/dashboard): Project for managing ML model and deploying ML module.
-- [Rekcurd-client](https://github.com/rekcurd/python-client) (here): Project for integrating ML module. 
+- [Rekcurd-client](https://github.com/rekcurd/python-client): Project for integrating ML module.
 
 
 ## Installation
@@ -34,33 +34,15 @@ pip install rekcurd_client
 ```
 
 ## How to use
-Example code is available [here](https://github.com/rekcurd/rekcurd-client-example). When you use Kubernetes and Rekcurd dashboard, you need to specify `application_name`, `service_level` and `rekcurd_grpc_version` correctly.
-
-```python
-from rekcurd_client import RekcurdWorkerClient
+Example is available [here](https://github.com/rekcurd/rekcurd-client-example). 
 
 
-host = 'localhost'
-port = 5000
-application_name = "sample"
-service_level = "development"
-rekcurd_grpc_version = "v2"
-
-client = RekcurdWorkerClient(
-    host=host, port=port,
-    application_name=application_name, service_level=service_level, rekcurd_grpc_version=rekcurd_grpc_version)
-
-idata = [0,0,0,1,11,0,0,0,0,0,
-         0,7,8,0,0,0,0,0,1,13,
-         6,2,2,0,0,0,7,15,0,9,
-         8,0,0,5,16,10,0,16,6,0,
-         0,4,15,16,13,16,1,0,0,0,
-         0,3,15,10,0,0,0,0,0,2,
-         16,4,0,0]
-response = client.run_predict_arrint_string(idata)
+## Unittest
+```
+$ python -m unittest
 ```
 
-### RekcurdWorkerClient
+## Method definition
 You need to use an appropriate method for your Rekcurd service. The methods are generated according to the input and output formats. *V* is the length of feature vector. *M* is the number of classes. If your algorithm is a binary classifier, you set *M* to 1. If your algorithm is a multi-class classifier, you set *M* to the number of classes.
 
 |method |input: data<BR>(required) |input: option |output: label<BR>(required) |output: score<BR>(required) |output: option |
@@ -96,9 +78,3 @@ The input "option" field needs to be a json format. Any style is Ok but we have 
 |Field |Type |Description |
 |:---|:---|:---|
 |suppress_log_input |bool |True: NOT print the input and output to the log message. <BR>False (default): Print the input and output to the log message.
-
-
-## Unittest
-```
-$ python -m unittest
-```
