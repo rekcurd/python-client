@@ -53,6 +53,7 @@ setup(
     name=PACKAGE_NAME,
     version=VERSION,
     description="A Python gRPC client for Rekcurd.",
+    long_description_content_type='text/markdown',
     author_email="rekcurd.developers@gmail.com",
     author="Rekcurd team and contributors",
     license="Apache License Version 2.0",
