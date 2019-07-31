@@ -1,5 +1,13 @@
 # Change Log
 
+## [v1.0.1](https://github.com/rekcurd/python-client/tree/v1.0.1)
+
+[Full Changelog](https://github.com/rekcurd/python-client/compare/v1.0.0...v1.0.1)
+
+**Merged pull requests:**
+
+- Specify `long\_description\_content\_type` [\#23](https://github.com/rekcurd/python-client/pull/23) ([keigohtr](https://github.com/keigohtr))
+
 ## [v1.0.0](https://github.com/rekcurd/python-client/tree/v1.0.0) (2019-04-26)
 [Full Changelog](https://github.com/rekcurd/python-client/compare/v0.4.5...v1.0.0)
 
